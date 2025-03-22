@@ -1,0 +1,1788 @@
+@printer Dialogue
+
+;This is slowly being converted to .nani script
+;We're using four letter codes for the characters:
+;kami, vald, ashh, sisk
+;We've used character names for the script, but the player should be able to rename at least Kamiya and Valda
+;Therefore those names are not in dialogue that has voice acting; only in text.
+
+;Story has two perspectives: kami and vald (Kamiya and Valda)
+;A variable of narr=="kami" or narr=="vald" is used to determine whose narration is shown.
+
+;Narrations should be displayed differently than dialogue speech
+;kami_inner marks her thoughts/narration
+;kami: mark her dialogue
+;vald_inner marks Valda's narration in the alternate version of the story
+;vald: marks her dialogue
+
+;The game has a "blush level" system in the game: Rosy, Strawberry, Fuchsia, Crimson (equivalent to low, medium, high, and freaky).
+;Like narration, only one blush level is shown at a time; in other words, the game displays the correct one based upon a set variable
+;Only text changes with the blush level. Other art and music remain the same
+;The narr and blush variables are all set in the opening before the main game begins.
+
+;toast function might be used for the fun pop-ups
+
+;the script uses the goto and #label system like Naninovel for the small amount of scene branching
+
+;setting some variables here with choices so that the script below works
+;in the final version, these may be set elsewhere
+
+;transition from title
+;@wait 3
+
+;BGM Title
+@back title
+@bgm op_ost fade:5
+
+;CHOOSE CHARACTER ART
+;4 humans of Kami
+;4 tieflings of Kami
+;4 humans of Valda
+;4 tieflings of Valda
+;1 Ashh
+;1 Sisk
+;ash and sisk can be assigned directly; the others must be a variable
+;The appearance of Kami and Valda will be handled with appearances.
+;So the player is setting appearances when they choose a look
+
+narrate: Welcome!! When complete, you will be able to configure this story to your liking and send your story to a friend. For now... Enjoy creating the story for yourself and we will have an update soon!
+
+narrate: This story has two main characters: a Magician and a Fighter. You can choose their look, name, voice, and whose perspective is used for the story.
+
+narrate: Choose if the Magician should be a human or tiefling (the one with the horns).
+@back choice_k
+@choice "Human"
+    @set speciesKami="human"
+@choice "Tiefling"
+    @set speciesKami="tiefling"
+@stop
+
+@if speciesKami=="human"
+    narrate: Now, choose a look for the Magician.
+    @back choice_k_h
+    @choice "MagicianI"
+        @set artKami="h1"
+    @choice "MagicianII"
+        @set artKami="h2"
+    @choice "MagicianIII"
+        @set artKami="h3"
+    @choice "MagicianIV"
+        @set artKami="h4"
+    @stop
+@if speciesKami=="tiefling"
+    narrate: Now, choose a look for the Magician.
+    @back choice_k_t
+    @choice "MagicianI"
+        @set artKami="t1"
+    @choice "MagicianII"
+        @set artKami="t2"
+    @choice "MagicianIII"
+        @set artKami="t3"
+    @choice "MagicianIV"
+        @set artKami="t4"
+    @stop
+
+narrate: Choose if the Fighter should be a human or tiefling (the one with the horns).
+@back choice_v
+@choice "Human"
+    @set speciesVald="human"
+@choice "Tiefling"
+    @set speciesVald="tiefling"
+@stop
+
+@if speciesVald=="human"
+    narrate: Now, choose a look for the Fighter.
+    @back choice_v_h
+    @choice "FighterI"
+        @set artVald="h1"
+    @choice "FighterII"
+        @set artVald="h2"
+    @choice "FighterIII"
+        @set artVald="h3"
+    @choice "FighterIV"
+        @set artVald="h4"
+    @stop
+@if speciesVald=="tiefling"
+    narrate: Now, choose a look for the Fighter.
+    @back choice_v_t
+    @choice "FighterI"
+        @set artVald="t1"
+    @choice "FighterII"
+        @set artVald="t2"
+    @choice "FighterIII"
+        @set artVald="t3"
+    @choice "FighterIV"
+        @set artVald="t4"
+    @stop
+
+@back choice_k
+narrate: Choose a name for the Magician.
+;Get name for Kamiyah from player
+@input nameKami summary:"Choose a name for the Magician" value:"Kamiyah"
+@stop
+
+@back choice_v
+narrate: Choose a name for the Fighter.
+;Get name for Valda from player
+@input nameVald summary:"Choose a name for the Fighter" value:"Valda"
+@stop
+
+
+;@stopBgm op_ost fade:2
+;Choose a Voice for {nameKami}
+@back choice_k
+;@set audtop="kami_diana"
+;@set audbottom="kami_rayleigh"
+narrate: Choose a voice for {nameKami}.
+;@showUI AudioButtons
+@choice "Diana" set:kamiVoice="Diana"
+@choice "Rayleigh" set:kamiVoice="Rayleigh"
+@stop
+;@hideUI AudioButtons
+
+;Choose a Voice for {nameVald}
+@back choice_v
+;@set audtop="vald_amanda"
+;@set audbottom="vald_hannah"
+narrate: Choose a voice for {nameVald}.
+;@showUI AudioButtons
+@choice "Amanda" set:valdVoice="Amanda"
+@choice "Hannah" set:valdVoice="Hannah"
+@stop
+;@hideUI AudioButtons
+
+;@bgm op_ost fade:3
+;set narrator
+@back title
+narrate: Do you wish to tell the story from {nameKami}'s or {nameVald}'s perspective?
+@choice "{nameKami}" set:narr="kami"
+@choice "{nameVald}" set:narr="vald"
+@stop
+
+narrate: There are two side characters: Ash and Sisko. You can choose the voice for them.
+
+;@stopBgm op_ost fade:2
+;Choose a Voice for Ash
+narrate: Choose a voice for Ash.
+;@showUI AudioButtons
+;@set audtop="ashh_sam"
+;@set audbottom="ashh_sky"
+@choice "Sam" set:ashhVoice="Sam"
+@choice "Sky" set:ashhVoice="Sky"
+@stop
+;@hideUI AudioButtons
+
+;Choose a Voice for Sisko
+narrate: Choose a voice for Sisko.
+;@showUI AudioButtons
+;@set audtop="sisk_diana"
+;@set audbottom="sisk_sky"
+@choice "Diana" set:siskVoice="Diana"
+@choice "Sky" set:siskVoice="Sky"
+@stop
+;@hideUI AudioButtons
+
+;@bgm op_ost fade:5
+narrate: Finally, you can choose a blush level. This changes the text. Rosy is the most innocent text. Crimson... is not.
+;set blush level
+@choice "Rosy" set:blush="rosy"
+@choice "Strawberry" set:blush="strawberry"
+@choice "Fuchsia" set:blush="fuchsia"
+@choice "Crimson" set:blush="crimson"
+@stop
+
+#kami_and_vald
+
+@hideAll time:4 wait!
+
+@if hasCode==true
+    narrate: Welcome, {sendee}! {sender} sent you this visual novel story!
+    narrate: There will be a message from them at the end.
+
+; BG Interior of The Flying Sword Inn
+;SFX people murmuring in a bar, sounds of drinking
+@sfx barambience loop!
+; kami and vald can already be on the screen when the story begins
+@stopBgm op_ost fade:2
+;@hide title time:2
+@back tavern time:1
+@bgm bar_ost fade:5 volume:0.5
+
+;start cam on POV character
+@if narr=="kami"
+    ;@wait 2
+    @char kami.{artKami} position:4.00,-5.40,49.90 look:left scale:.50 time:4
+    @camera offset:4.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.349 orthographic:true time:2
+@if narr=="vald"
+    ;@wait 2
+    @char vald.{artVald} position:-4.00,-5.40,49.90 look:Left scale:.50 time:4
+    @camera offset:-4.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.159 orthographic:true time:2
+
+@if narr=="kami"
+    kaminarr: <i>{nameVald} and I had been traveling together for so long now. We'd discovered lost treasure, battled monsters, tasted cuisine from around the world. But there was one thought my mind wouldn’t let go. I wondered…</i>
+    @if blush=="rosy"
+        kaminarr: <i>Will tonight be the night when I tell {nameVald} how much I love her?</i>
+    @else if:blush=="strawberry"
+        kaminarr: <i>How delicious do her lips taste?<i>
+    @else if:blush=="fuchsia"
+        kaminarr: <i>How delicious would she taste in between the sheets of a shared bed?</i>
+    @else if:blush=="crimson"
+        kaminarr: <i>How delicious would my fingers taste after being inside her?</i>
+@if narr=="vald"
+    vald: <i>{nameKami} and I had been traveling together for so long now. We’d discovered lost treasure, battled monsters, tasted cuisine from around the world. But tonight, change was in the air. Maybe tonight would be the night…</i>
+    @if blush=="rosy"
+        valdnarr: <i>when I get enough courage to tell her how I truly feel about her.</i> 
+    @else if:blush=="strawberry"
+        valdnarr: <i>when I get enough courage to finally kiss her.<i>
+    @else if:blush=="fuchsia"
+        valdnarr: <i>when I get enough courage to show her exactly how much I want her.</i>
+    @else if:blush=="crimson"
+        valdnarr: <i>when I learn what expression she makes when she orgasms.</i>
+
+@sfx tankardslam
+;SFX tankard slamming on table
+;zoom out to other character
+@if narr=="kami"
+    @camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:4
+    @char vald.{artVald} position:-4.00,-5.40,49.90 look:Left scale:.50 time:2
+
+@voice l1_Amanda if:valdVoice=="Amanda"
+@voice l1_Hannah if:valdVoice=="Hannah"
+vald: Ahhhh! That Dwarf’s Bay Brew really hits the spot.
+
+@if narr=="vald"
+    @camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.00 orthographic:true time:4
+    @char kami.{artKami} position:4.00,-5.40,49.90 look:left scale:.50 time:4
+@voice l2_Diana if:kamiVoice=="Diana"
+@voice l2_Leigh if:kamiVoice=="Rayleigh"
+kami: Those drinks have hit multiple spots for you tonight. 
+
+@voice l3_Amanda if:valdVoice=="Amanda"
+@voice l3_Hannah if:valdVoice=="Hannah"
+vald: I can hold my liquor! Remember when I won that drinking contest at the Suncrest Fair? 
+
+@voice l4_Diana if:kamiVoice=="Diana"
+@voice l4_Leigh if:kamiVoice=="Rayleigh"
+kami: The contest prize was that overstuffed owlbear doll you gave me. You brought it to me, beaming and swaying like an upturned barrel on a boat.
+@sfx barambience fade:3 volume:0.33 loop!
+
+@if narr=="kami"
+    kaminarr: <i>That may have been one of the first times I realized I had feelings for you.</i>
+@if narr=="vald"
+    valdnarr: <i>Even then I wanted you to fall for me as hard as I fell for you.</i>
+
+@voice l5_Amanda if:valdVoice=="Amanda"
+@voice l5_Hannah if:valdVoice=="Hannah"
+vald: Hah! Yeah, that prize doll was ugly. But I won it! It wasn’t as ugly as that bat demon we faced in the Magheim caverns. 
+
+@voice l6_Diana if:kamiVoice=="Diana"
+@voice l6_Leigh if:kamiVoice=="Rayleigh"
+kami: Ugh. That horrid creature haunted my dreams for weeks. Why was it in the same cavern as a fabled scholar?! 
+
+@voice l7_Amanda if:valdVoice=="Amanda"
+@voice l7_Hannah if:valdVoice=="Hannah"
+vald: That scholar turned out to be a gold dragon in the mood to take on two new pupils: us! 
+
+@voice l8_Diana if:kamiVoice=="Diana"
+@voice l8_Leigh if:kamiVoice=="Rayleigh"
+kami: Master Gildon was exceptional. 
+
+@if narr=="kami"
+    kaminarr: <i>We sloshed our flagons of ale together in respect for our old Master.</i>
+@if narr=="vald"
+    valdnarr: <i>We sloshed our flagons of ale together in respect for our old Master.</i>
+
+@voice l9_Diana if:kamiVoice=="Diana"
+@voice l9_Leigh if:kamiVoice=="Rayleigh"
+kami: His library of rare manuscripts and collection of arcane artifacts was unparalleled…
+
+@voice l10_Amanda if:valdVoice=="Amanda"
+@voice l10_Hannah if:valdVoice=="Hannah"
+vald: And the combo moves he taught us are pretty sweet. 
+
+@camera offset:4.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.182 orthographic:true time:2
+@voice l11_Diana if:kamiVoice=="Diana"
+@voice l11_Leigh if:kamiVoice=="Rayleigh"
+kami: We did Snake Lying in Grass against the wraiths in Miresmere!
+
+@char vald.{artVald} position:-2.00,-5.40,49.90 look:Left scale:.50
+@camera offset:-2.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.182 orthographic:true time:2
+@voice l12_Amanda if:valdVoice=="Amanda"
+@voice l12_Hannah if:valdVoice=="Hannah"
+vald: Don't forget Tiger Stalks Down the Mountain as the final blow against the chimera!
+
+;Spectacular finish text across the screen
+@camera offset:4.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.282 orthographic:true time:1
+;@toast "Spectacular Finish!!"
+@voice l13_Diana if:kamiVoice=="Diana"
+@voice l13_Leigh if:kamiVoice=="Rayleigh"
+kami: Spectacular finish! 
+
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.0 orthographic:true
+@char kami.{artKami} position:1.00,-5.40,49.90 look:Left scale:.50 time:2
+@voice l14_Diana if:kamiVoice=="Diana"
+@voice l14_Leigh if:kamiVoice=="Rayleigh"
+kami: Except I wasn’t able to stop the creature from striking you…
+
+;SFX soft fabrics moving against each other as they move closer
+@if narr=="kami"
+    kaminarr: <i>I gently brushed {nameVald}’s hair back from her face, looking at her scar.</i>
+@if narr=="vald"
+    valdnarr: <i>She gently brushed my hair back from my face, looking without disgust at my scar.</i>
+
+@voice l15_Diana if:kamiVoice=="Diana"
+@voice l15_Leigh if:kamiVoice=="Rayleigh"
+kami: With a deeper hit, I would have had a hard time saving your eye. 
+
+@camera offset:0.00,2.00,0.00 rotation:0.00,0.00,0.00 zoom:0.153 orthographic:true time:2
+@if narr=="kami"
+    kaminarr: <i>{nameVald}'s closeness suddenly made my cheeks warm, but she didn't move away. Her expression softened, setting my heart to beat faster.</i>
+    @if blush=="rosy"
+        kaminarr: <i>I cannot be the only one feeling this way.</i>
+    @else if:blush=="strawberry"
+        kaminarr: <i>After all this time, not even the jewel of Lothia is as beautiful as {nameVald}'s scarred face.</i>
+    @else if:blush=="fuchsia"
+        kaminarr: <i>If I don't finally get my lips on hers by the end of this night, I'd kiss the bat demon for some relief.</i>
+    @else if:blush=="crimson" 
+        kaminarr: <i>By the Goddess' bosom, I needed her naked body grinding on mine.</i>
+
+@if narr=="vald"
+    valdnarr: <i>Kamiya's closeness made my heart jump.</i>
+
+@voice l16_Amanda if:valdVoice=="Amanda"
+@voice l16_Hannah if:valdVoice=="Hannah"
+vald: That was my fault.
+
+@camera offset:0.00,2.00,0.00 rotation:0.00,0.00,0.00 zoom:0.337 orthographic:true time:2
+@voice l17_Diana if:kamiVoice=="Diana"
+@voice l17_Leigh if:kamiVoice=="Rayleigh"
+kami: You wanted to show off the move you had been practicing.
+
+@voice l18_Amanda if:valdVoice=="Amanda"
+@voice l18_Hannah if:valdVoice=="Hannah"
+vald: But you had my back through the whole fight and pieced me back together. Then and many other times… 
+
+@camera offset:0.00,2.50,0.00 rotation:0.00,0.00,0.00 zoom:0.607 orthographic:true time:2
+@char vald.{artVald} position:-2.00,-5.40,49.90 rotation:0.00,0.00,356.0 look:Left scale:.50 time:2
+
+@if narr=="kami"
+    kaminarr: <i>{nameVald}’s eyes glanced to my mouth, just inches away. Was she.. leaning in…?</i>
+@if narr=="vald"
+    valdnarr: <i>With {nameKami} this close, I could admire her beautiful features without reserve.</i>
+    @if blush=="rosy"
+        valdnarr: <i>I have never felt so safe with someone before.</i>
+    @else if:blush=="strawberry"
+        valdnarr: <i>There was nothing in this world more precious than this woman before me.</i>
+    @else if:blush=="fuchsia"
+        valdnarr: <i>I needed to reward this goddess of a woman with all the pleasures she deserved. Tonight.</i>
+    @else if:blush=="crimson"
+        valdnarr: <i>And imagine the way her back would arch as my fingers slid deep into her core.</i>
+
+@voice l19_Amanda if:valdVoice=="Amanda"
+@voice l19_Hannah if:valdVoice=="Hannah"
+vald: I have always wished-
+@blur time:2
+
+@char kami.{artKami} position:1.00,-5.10,49.90 look:Left scale:.50 time:2
+@if narr=="kami"
+    kaminarr: <i>Yes, yes, after all this time, my lips await-</i>
+@if narr=="vald"
+    valdnarr: <i>I need to kiss her. No more delaying.</i>
+
+;SFX crashing sound
+@stopBgm bar_ost
+@sfx crash
+@shake kami count:1
+@shake Camera power:0.3
+@if narr=="kami"
+    @sfx l21_Diana if:valdVoice=="Diana"
+    @sfx l21_Leigh if:valdVoice=="Rayleigh"
+    kaminarr: <i>At that moment, an empty tankard bounced off the table near us.</i>
+
+@if narr=="vald"
+    @sfx l20_Amanda if:valdVoice=="Amanda"
+    @sfx l20_Hannah if:valdVoice=="Hannah"
+    valdnarr: <i>At that moment, an empty tankard bounced off the table near us.</i>
+
+@char kami.{artKami} position:2.00,-5.40,49.90 look:Left scale:.50
+@char vald.{artVald} position:-3.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Left scale:.50
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.0 orthographic:true time:1
+@blur power:0
+;@print "Oh!" author:* as:"Together"
+; this together may not work with the combination of voices
+;@voice l20_Amanda if:valdVoice=="Amanda"
+;@voice l20_Hannah if:valdVoice=="Hannah"
+;vald: Oh!
+;@voice l21_Diana if:kamiVoice=="Diana"
+;@voice l21_Leigh if:kamiVoice=="Rayleigh"
+;kami: Oh! 
+
+@if narr=="kami"
+    kaminarr: <i>With shouts and improvised weapons, a couple of patrons were having a difference of opinion about the quality of the Dwarf’s Bay Brew. Typical night at The Flying Sword.</i>
+@if narr=="vald"
+    valdnarr: <i>With shouts and improvised weapons, a couple of patrons were having a difference in opinion about the quality of the Dwarf’s Bay Brew. Talk about terrible timing!</i>
+
+
+;SFX stomping feet on wood as someone comes over
+;angry Sisko sprite comes on screen
+@char sisk position:10.00,-5.40,49.90 look:Right scale:.50 time:1
+@char sisk position:8.00,-5.40,49.90 look:Right scale:.50 time:2
+@voice l22_Diana if:siskVoice=="Diana"
+@voice l22_Sky if:siskVoice=="Sky"
+sisk: You two shut it or we’ll find out how thick those skulls of yours really are.[char sisk position:-4.50,-5.40,49.90 look:Right time:3] I can smash these tankards upside your heads as easy as you smash them on the floor!
+;Sisko exits in direction of bar
+@char sisk position:-12.50,-5.40,49.90 look:Right scale:.50 time:3 wait!
+@hide sisk
+
+@bgm bar_ost fade:5 volume:0.5
+@if narr=="kami"
+    kaminarr: <i>{nameVald} pulled away from me.</i>
+@if narr=="vald"
+    valdnarr: <i>I straightened up awkwardly.</i>
+
+@voice l23_Amanda if:valdVoice=="Amanda"
+@voice l23_Hannah if:valdVoice=="Hannah"
+vald: cough. I - uh- I should get us some more drinks. 
+;SFX sound of a chair being pushed back, wood on wood
+
+@char vald.{artVald} position:-4.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Left scale:.50 time:1
+@voice l24_Diana if:kamiVoice=="Diana"
+@voice l24_Leigh if:kamiVoice=="Rayleigh"
+kami: Yeah. Yeah, drinks. I’ll be right here! 
+
+@if narr=="kami"
+    @char vald.{artVald} position:-6.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Right scale:.50 time:2
+    kaminarr: <i>{nameVald} picked up our tankards and left towards Sisko, the barkeep and owner of the tavern.</i>
+    @char vald.{artVald} position:-6.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Left scale:.50 time:1
+    kaminarr: <i>She looked over her shoulder and gave me one of those smiles that made my spellcasting hands flutter before giving her attention to the orc in charge.</i>
+    ;Valda exit towards bar
+    @char vald.{artVald} position:-13.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Right scale:.50 wait! time:3
+    @hide vald
+    @goto .ka_inn
+@if narr=="vald"
+    @char vald.{artVald} position:-6.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Right scale:.50 time:2    
+    valdnarr: <i>I picked up our tankards and left towards Sisko, the barkeep and owner of the tavern.</i>
+    @char vald.{artVald} position:-6.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Left scale:.50 time:1    
+    valdnarr: <i>I looked back and saw {nameKami} still watching me. Feeling my heart beat faster, I threw her a smile and turned back to the orc in charge.</i>
+    @char vald.{artVald} position:-13.00,-5.40,49.90 rotation:0.00,0.00,0.0 look:Right scale:.50 wait! time:3    
+    ;Valda exit towards bar
+    @hide vald
+    @hide kami
+    @goto .vs_inn
+
+
+#ka_inn
+
+@if blush=="rosy"
+    kaminarr: <i>Sigh. I'm more attracted every time I see her. She was leaning in, wasn't she? Is this the night she finally kisses me?</i>
+@else if:blush=="strawberry"
+    kaminarr: <i>Agh. When did she get this attractive?! She was so close I could practically feel her lips on mine.</i>
+@else if:blush=="fuchsia"
+    kaminarr: <i>Slap me, I want her so much. If she gets that close to me again, I will need to borrow a mop from the bar mistress.</i>
+@else if:blush=="crimson"
+    kaminarr: <i>Gah, I'm dying! I want to grind myself on her face so bad!</i>
+
+@stopBgm bar_ost fade:2
+@bgm ash_ost fade:8 volume:0.5
+
+;enter ashh
+@char ashh position:-8.00,-5.40,49.90 look:Right scale:.50 time:1 wait!
+@char ashh position:-3.00,-5.40,49.90 scale:.50 time:2
+kaminarr: <i>Breaking my brooding, a svelte figure glided into {nameVald}’s seat, casually leaning back against the table.</i>
+
+@voice l25_Sam if:ashhVoice=="Sam"
+@voice l25_Sky if:ashhVoice=="Sky"
+ashh: My gracious, I was wondering if she would ever leave your side! I was so hoping to get a chance to talk with you. 
+
+kaminarr: <i>That cloak!</i>
+
+@voice l26_Sam if:ashhVoice=="Sam"
+@voice l26_Sky if:ashhVoice=="Sky"
+ashh: The name is Ash of the Sanguine Vipers. The pleasure is yours.
+
+kaminarr: <i>I remained silent, letting the viper waggle their tongue.</i>
+
+@voice l27_Sam if:ashhVoice=="Sam"
+@voice l27_Sky if:ashhVoice=="Sky"
+ashh: When you and your compatriot blew through Laverna and deposed the man we had planted there… Well let us just say that we of the Sanguine Vipers do not take kindly to that sort of behavior. 
+
+@voice l28_Sam if:ashhVoice=="Sam"
+@voice l28_Sky if:ashhVoice=="Sky"
+ashh: My boss would like to have a word with you two. He might let you off with a warning. Or he might kill you. Regardless, I will need you to come with me now. 
+
+@voice l29_Diana if:kamiVoice=="Diana"
+@voice l29_Leigh if:kamiVoice=="Rayleigh"
+kami: If you think- 
+
+@char ashh position:-0.50,-5.40,48.90 scale:.50
+@camera offset:-0.50,2.50,0.00 rotation:0.00,0.00,0.00 zoom:0.388 orthographic:true time:1
+;ashh moves right next to Kamiyah
+kaminarr: <i>Faster than I could lift a finger, I felt a knife pressed up against my ribcage. Just a bit of pressure and the blade would slip between my ribs and pierce my heart.</i>
+
+@voice l30_Sam if:ashhVoice=="Sam"
+@voice l30_Sky if:ashhVoice=="Sky"
+ashh: I said, I will need you to come with me now.
+
+kaminarr: <i>I looked at {nameVald}, but she still had her back to me. She was deep in conversation with Sisko, unaware of the danger we were in.</i>
+kaminarr: <i>Maybe I can keep her safe and nowhere near this assassin's blade.</i>
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.0 orthographic:true
+kaminarr: <i>I stood up and Ash threw their arm around me as if we were old friends. Arm in arm with my enemy, I left the warm comfort of the tavern and {nameVald} behind.</i>
+;SFX any bar sound effects fade
+@stopSfx barambience fade:2
+@hide kami
+@hide ashh
+
+@goto .ka_outside
+
+#ka_outside
+
+@back outside.DropFade time:2 wait!
+; BG Exterior of The Flying Sword Inn. City Street.
+;SFX a horse noise in the distance
+@char kami.{artKami} position:4.00,-5.40,49.90 scale:.50 time:1
+@char ashh position:6.00,-5.40,49.90 scale:.50 time:1
+
+;SFX a soft wind blows
+@sfx softwind
+kaminarr: <i>As we stepped into the crisp night, a small gathering of figures emerged from the shadows.</i>
+
+@char goon1 position:-9.00,-9.40,49.90 scale:.68 time:1 look:Right
+@char goon2 position:-8.00,-9.40,49.90 scale:.68 time:2 look:Right
+@char goon3 position:-2.00,-9.40,49.90 scale:.68 time:1 look:Right
+@char goon4 position:-4.00,-9.40,49.90 scale:.68 time:2 look:Right
+
+kaminarr: <i>The assassin thug pushed me into their waiting arms.</i>
+@char kami.{artKami} position:-6.00,-5.40,46.90 look:Left scale:.50 time:1.5
+
+@voice l31_Sam if:ashhVoice=="Sam"
+@voice l31_Sky if:ashhVoice=="Sky"
+ashh: See, underlings? An easy extrication. Never underestimate the persuasiveness of a nice smile and a well-placed blade. Or me.
+@char ashh position:6.00,-5.40,45.90 scale:.50 look:Left
+
+kaminarr: <i>Four goons? Well that shouldn’t be an issue. With how wide this street is I should be able to cast-</i>
+@char kami.{artKami} position:-6.00,-5.40,46.90 look:Right scale:.50
+
+@voice l32_Sam if:ashhVoice=="Sam"
+@voice l32_Sky if:ashhVoice=="Sky"
+ashh: Uh, uh, uh. I see that glimmer in your eye, spellcaster. Keep your hands where I can see them and your mouth shut. 
+@voice l33_Sam if:ashhVoice=="Sam"
+@voice l33_Sky if:ashhVoice=="Sky"
+ashh: For every twitch and peep I hear from you I will bestow a kiss from my lovely Hope’s Bane upon Miss Muscles. You don’t want me to hurt her more than I have to, do you? 
+
+@sfx softwind
+kaminarr: <i>I froze.</i>
+@char ashh position:0.50,-5.40,45.90 scale:.50 look:Right
+kaminarr: <i>Glowing with smugness, Ash of the Sanguine Vipers turned and looked towards the front door of the tavern.</i>
+
+@voice l34_Sam if:ashhVoice=="Sam"
+@voice l34_Sky if:ashhVoice=="Sky"
+ashh: Prepare yourselves, Vipers. I expect a swift and decisive victory for the boss. 
+
+@goto .goon_fight
+
+#vs_inn
+;@char vald.{artVald} scale:.50
+@hideAll time:2
+@wait 3
+@camera offset:2.00,0.50,0.00 zoom:0.702 orthographic:true time:2 wait!
+@back tavern time:2
+@char vald.{artVald} position:-3.00,-2.40,49.90 scale:0.22 look:Right
+@slide vald.{artVald} to:54
+
+@if blush=="rosy"
+    valdnarr: <i>What is wrong with you?? You’ve been pining after her for how many years and you let a stupid tankard get in the way?! When all you had to do was lean in and kiss her…</i>
+@else if:blush=="strawberry"
+    valdnarr: <i>Agh! She must be casting some sort of love spell on me because there is no way someone can be this attracted to another person. Her laugh, her eyes, her lips…</i>
+@else if:blush=="fuchsia"
+    valdnarr: <i>Goddesses above, all I want is to taste those sweet lips on mine! And who knows what fun things that could lead to… Maybe I’ll go back and-</i>
+@else if:blush=="crimson"
+    valdnarr: <i>She looks so good I want to push her on the table and take her right–</i>
+
+;@char sisk scale:.50
+@char sisk position:2.50,-2.40,49.90 scale:0.22 time:1
+@voice l35_Diana if:siskVoice=="Diana"
+@voice l35_Sky if:siskVoice=="Sky"
+sisk: Hey there, what can I do for you?
+
+@voice l36_Amanda if:valdVoice=="Amanda"
+@voice l36_Hannah if:valdVoice=="Hannah"
+vald: Uh- hey Sisko, could I get another round? 
+
+@voice l37_Diana if:siskVoice=="Diana"
+@voice l37_Sky if:siskVoice=="Sky"
+sisk: Sure. Here, they’re on the house. I still haven’t thanked you properly for taking care of those dire rats in the cellar. 
+;SFX laughter of drunken people
+
+@voice l38_Amanda if:valdVoice=="Amanda"
+@voice l38_Hannah if:valdVoice=="Hannah"
+vald: Thanks! Hey, d’you need me to take care of those idiots in the corner, too? 
+
+;SFX mug being placed on the bar
+@sfx tankardslam
+@voice l39_Diana if:siskVoice=="Diana"
+@voice l39_Sky if:siskVoice=="Sky"
+sisk: Nah, they’re harmless, but thanks for the offer.
+
+@voice l40_Amanda if:valdVoice=="Amanda"
+@voice l40_Hannah if:valdVoice=="Hannah"
+vald: I wouldn’t mind one bit. 
+
+valdnarr: <i>Payback for ruining my moment with {nameKami} just now.</i>
+
+@voice l41_Diana if:siskVoice=="Diana"
+@voice l41_Sky if:siskVoice=="Sky"
+sisk: Hah! You’re always so ready to lend a hand. That’s why I like you! 
+@voice l42_Diana if:siskVoice=="Diana"
+@voice l42_Sky if:siskVoice=="Sky"
+sisk: Hey, it looks like your girl is leaving with someone. Did you want to close your tab? 
+
+@voice l43_Amanda if:valdVoice=="Amanda"
+@voice l43_Hannah if:valdVoice=="Hannah"
+vald: Wha- ?! She’s not my girl![camera offset:1.00,1.00,0.00 zoom:0.732 orthographic:true time:1] I mean she- Wait. What?? 
+
+valdnarr: <i>{nameKami}’s gotten better about talking to people but she isn’t that outgoing…</i>
+valdnarr: <i>I turned to see the retreating figures of {nameKami} and a svelte elf stepping out the door, the stranger’s arm casually thrown over her shoulders.</i>
+valdnarr: <i>I know that cloak…</i>
+@camera offset:1.00,1.00,0.00 zoom:0.692 orthographic:true time:1
+
+@voice l44_Amanda if:valdVoice=="Amanda"
+@voice l44_Hannah if:valdVoice=="Hannah"
+vald: Don’t close that tab - we’ll be back.
+
+@camera offset:2.00,1.00,0.00 zoom:0.692 orthographic:true time:2
+@voice l45_Diana if:siskVoice=="Diana"
+@voice l45_Sky if:siskVoice=="Sky"
+sisk: Sure sure. These drinks will be waiting here for ya. But, don't end up in prison tonight. You're better than a fist to the face for jealousy.
+
+valdnarr: <i>I walked over, grabbed my sword leaning up against the edge of the table.</i>
+
+@voice l46_Amanda if:valdVoice=="Amanda"
+@voice l46_Hannah if:valdVoice=="Hannah"
+vald: That elf will be lucky to only taste my fist, Sisko. And it's not for jealousy.
+@hide sisk
+
+@if blush=="rosy"
+    valdnarr: <i>I didn't know where {nameKami} and I stood with kissing yet, but I knew I could trust her to the end of my days.</i>
+@else if:blush=="strawberry"
+    valdnarr: <i>{nameKami} and I might be a bit confused about our romantic feelings, but we were not confused about our trust and friendship.</i>
+@else if:blush=="fuchsia"
+    valdnarr: <i>Being suspicious of {nameKami} had never crossed my mind. Instead, I was going to stick my sword in that assassin's throat – and then my tongue in {nameKami}'s mouth.</i>
+@else if:blush=="crimson"
+    valdnarr: <i>I am not going to be carried away by jealousy tonight. Carried away by lust for my partner? Much more likely.</i>
+valdnarr: <i>I strode toward the exit, my fingers wrapped around my sword's hilt.</i>
+@stopBgm bar_ost fade:2
+@stopSfx barambience fade:2
+@slide vald.{artVald} to:-10
+@hide vald
+;SFX any bar sounds fade
+
+@goto .goon_fight
+
+@if narr=="vald"
+    @char kami.{artKami} position:-6.00,-5.40,49.90 look:Right scale:.50
+    @char ashh position:2.00,-5.40,48.90 scale:.50 look:Right
+    @char goon1 position:-9.00,-9.40,49.90 scale:.68 time:1
+    @char goon2 position:-8.00,-9.40,49.90 scale:.68 time:2
+    @char goon3 position:-2.00,-9.40,49.90 scale:.68 time:1
+    @char goon4 position:-4.00,-9.40,49.90 scale:.68 time:2
+
+#goon_fight
+
+;BG Exterior of The Flying Sword Inn. City Street.
+@back outside transition:DropFade
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.00 orthographic:true time:3
+@bgm ash_ost fade:3 volume:0.5
+;SFX a soft wind blows
+
+@if narr=="vald"
+    @char kami.{artKami} position:-6.00,-5.40,47.90 look:Right scale:.50
+    @char ashh position:0.00,-5.40,48.90 scale:.50 look:Right
+    @char goon1 position:-9.00,-9.40,49.90 scale:.68 time:1 look:Right
+    @char goon2 position:-8.00,-9.40,49.90 scale:.68 time:2 look:Right
+    @char goon3 position:-2.00,-9.40,49.90 scale:.68 time:1 look:Right
+    @char goon4 position:-4.00,-9.40,49.90 scale:.68 time:2 look:Right
+
+
+;enter Valda
+;@char vald.{artVald} scale:.50
+;@char kami.{artKami} scale:.50
+;@char ashh scale:.50
+;SFX smash sound like a door being thrown open
+@sfx dooropen
+@shake goon1 count:1
+@shake goon2 count:1
+@shake goon3 count:1
+@shake goon4 count:1
+@char vald.{artVald} position:12.00,-5.40,48.90 look:Right scale:.50 wait!
+@char vald.{artVald} position:8.00,-5.40,48.90 look:Right scale:.50 time:1
+@if narr=="kami"
+    kaminarr: <i>As if on cue, {nameVald} burst through the front door, sword already in hand. The mixture of worry and relief at the sight of her arrival was overwhelming, but I kept my head and watched for an opportunity.</i>
+@if narr=="vald"
+    valdnarr: <i>As I stepped into the crisp night, I found a small gathering of figures surrounding {nameKami}. The relief at seeing her unharmed was almost overwhelming, but I kept my head and turned to the elf swaggering between them and me.</i>
+
+@voice l47_Amanda if:valdVoice=="Amanda"
+@voice l47_Hannah if:valdVoice=="Hannah"
+vald: I thought I saw something nasty slither out here. 
+
+@sfx softwind
+@voice l48_Sam if:ashhVoice=="Sam"
+@voice l48_Sky if:ashhVoice=="Sky"
+ashh: How kind of you to join us. I am Ash of the Sanguine Vipers. 
+
+@if narr=="kami"
+    kaminarr: <i>The assassin even had the gall to give a little bow.</i>
+@if narr=="vald"
+    valdnarr: <i>The assassin even had the gall to give a little bow.</i>
+
+@voice l49_Sam if:ashhVoice=="Sam"
+@voice l49_Sky if:ashhVoice=="Sky"
+ashh: My boss has requested an audience with both of you, and we will not be taking no for an answer. How about you make this easier for everyone and come with us peacefully? Your colleague here has already agreed to play nicely. Why don’t you return the favor? 
+
+@voice l50_Amanda if:valdVoice=="Amanda"
+@voice l50_Hannah if:valdVoice=="Hannah"
+vald: Hah, I only play nicely with my friends and small animals. And right now, you look more like a festival puppet, made for hammering. 
+
+@if narr=="kami"
+    kaminarr: <i>Hammer... puppet... {nameVald} was going to use Smashing the Jester. I can work with that.</i>
+    @if blush=="rosy"
+        kaminarr: <i>In fact, I could work with anything she threw my way.</i>
+    @else if:blush=="strawberry" 
+        kaminarr: <i>In fact, I could think of one other thing she could smash-</i>
+    @else if:blush=="fuchsia"
+        kaminarr: <i>In fact, {nameVald} could smash me all night if we–</i>
+    @else if:blush=="crimson"
+        kaminarr: <i>In fact, I would be smashing my button later with thoughts of how good {nameVald} looks holding that sword.</i>
+@if narr=="vald"
+        valdnarr: <i>I trusted that {nameKami} would pick up on my hint of using Smashing the Jester.</i>
+    @if blush=="rosy"
+        valdnarr: <i>Her wit and intellect were some of the things I loved most about her.</i>
+    @else if:blush=="strawberry" 
+        valdnarr: <i>I knew she would pick up on my hint of smashing something else, if she was interested…</i>
+    @else if:blush=="fuchsia"
+        valdnarr: <i>If we got out of this, she and I could smash our jesters together all night.</i>
+    @else if:blush=="crimson"
+        valdnarr: <i>I was about ready to smash my face into her sweet depths here and now if we didn’t get this fight over with soon.</i>
+
+@voice l51_Sam if:ashhVoice=="Sam"
+@voice l51_Sky if:ashhVoice=="Sky"
+ashh: What are you blushing about, wizard?
+
+@if narr=="kami"
+    kaminarr: <i>One insult will be enough distraction for me to end this.</i>
+@if narr=="vald"
+    valdnarr: <i>I wanted to know the same thing.</i>
+
+@voice l52_Diana if:kamiVoice=="Diana"
+@voice l52_Leigh if:kamiVoice=="Rayleigh"
+kami: How satisfying it will be when {nameVald}'s fist changes that toothy grin of yours.
+
+@sfx softwind
+@voice l53_Sam if:ashhVoice=="Sam"
+@voice l53_Sky if:ashhVoice=="Sky"
+ashh: You wound me, lady. Perhaps I shall put a dagger through your pretty throat now instead of later. The boss can make do with only one of you.
+
+@if narr=="kami"
+    kaminarr: <i>With a thanks to Master Gildon for his training on silent incantations, I centered my magic, vividly imagined casting a spell of invisibility, and vanished from my enemies.</i>
+    @sfx shimmer
+    @hide kami
+@if narr=="vald"
+    valdnarr: <i>With a thanks to Master Gildon for drilling those silent incantations into {nameKami}, I watched as she closed her eyes and vanished from these fools who underestimated her.</i>
+    @sfx shimmer
+    @hide kami
+
+@wait 1
+@voice l54_Sam if:ashhVoice=="Sam"
+@voice l54_Sky if:ashhVoice=="Sky"
+ashh: What?!
+;SFX mumbling, surprised goons
+@shake goon1 count:10 time:0.3 hor:true
+@shake goon2 count:10 time:0.3
+@shake goon3 count:10 time:0.3 hor:true
+@shake goon4 count:10 time:0.3
+
+@if narr=="kami"
+    kaminarr: <i>I slipped between two of the gang members, leaving them fumbling in the space I had vacated, desperate hands waving through the air.</i>
+@if narr=="vald"
+    valdnarr: <i>It was hard not to laugh at them flailing around in the space that {nameKami} had vacated, they looked so stupid. A moment later I felt her soft, steady hands on my back.</i>
+
+@voice l55_Sam if:ashhVoice=="Sam"
+@voice l55_Sky if:ashhVoice=="Sky"
+ashh: FIND HER YOU FOOLS!
+
+@if narr=="kami"
+    kaminarr: <i>I circled behind {nameVald} and started to concentrate my power. I wove the signs and spoke the arcane words to increase her strength.</i>
+    kaminarr: <i>It really is too bad that these rogues got in the way of our quality time…</i>
+    @if blush=="rosy"
+        kaminarr: <i>Oh well. I guess this is kind of our thing.</i>
+    @else if:blush=="strawberry"
+        kaminarr: <i>I might have gotten a kiss by now. Goddesses know I've waited long enough.</i>
+    @else if:blush=="fuchsia"
+        kaminarr: <i>I have ideas for other ways {nameVald} could have used this stamina boost I am about to give her.</i>
+    @else if:blush=="crimson"
+        kaminarr: <i>I could be rubbing my hands between her thighs instead of between her shoulder blades by now.</i>
+@if narr=="vald"
+    valdnarr: <i>Ugh, these chumps are getting in the way of our quality time!</i>
+    @if blush=="rosy"
+        valdnarr: <i>I’ll show her just how fast I can take them down. And when I’m done, I’ll confess my feelings for her.</i>
+    @else if:blush=="strawberry"
+        valdnarr: <i>No more hesitation. When I’m done with these losers I’m going to march right up to her and give her the kissing of a lifetime.</i>
+    @else if:blush=="fuchsia"
+        valdnarr: <i>Maybe I’ll ask her to cast this spell again and then I'll take care of her every desire until we break the bed.</i>
+    @else if:blush=="crimson"
+        valdnarr: <i>I wonder if she knows a spell that makes a tongue longer for about an hour.</i>
+
+@if narr=="kami"
+    @sfx shimmer
+    kaminarr: <i>I planted my hand on her back and felt the magic transfer from my body to hers, making the invisibility spell fade. [char kami.{artKami} position:8.00,-5.40,49.90 look:Left scale:.50] I quickly moved away from her side to prevent them from surrounding the both of us at once.</i>[char kami.{artKami} position:4.00,-5.40,49.90 look:Left scale:.50 time:1]
+;SFX increasing magical sound
+@if narr=="vald"
+    @sfx shimmer
+    valdnarr: <i>I felt my strength surge as {nameKami}’s magic flowed into me. [char kami.{artKami} position:8.00,-5.40,49.90 look:Left scale:.50] From the corner of my eye I saw her quickly move away from my side to prevent them from surrounding the both of us at once, her invisibility spell gone.</i>[char kami.{artKami} position:4.00,-5.40,49.90 look:Left scale:.50 time:1]
+;SFX increasing magical sound
+
+@if narr=="kami"
+    kaminarr: <i>{nameVald} swung her sword in a figure eight and assumed her fighting stance.</i>
+@if narr=="vald"
+    valdnarr: <i>I swung my sword in a figure eight and assumed my fighting stance.</i>
+
+@voice l56_Amanda if:valdVoice=="Amanda"
+@voice l56_Hannah if:valdVoice=="Hannah"
+vald: Alright, who wants to regret their choice of career first?! 
+
+@voice l57_Sam if:ashhVoice=="Sam"
+@voice l57_Sky if:ashhVoice=="Sky"
+ashh: Hiss. Get them!!!
+
+@stopBgm ash_ost
+@bgm goon_fight_ost fade:3 volume:0.5
+
+@ if narr=="kami"
+    @goto .kami_battle
+@if narr=="vald"
+    @goto .vald_battle
+
+#kami_battle
+
+@hide vald time:0.5
+@hide ashh time:0.5
+@hide goon3 time:0.5
+@hide goon4 time:0.5
+
+;Text on screen. "Time for Battle!"
+
+kaminarr: <i>Two enemies jumped to engage {nameVald}. The other two goons eyed me. As they unsheathed their swords and took a step forward, I cast a spell of protection to ward off physical attacks.</i>
+@char goon1 position:-2.00,-9.40,49.90 scale:.68 time:1
+
+;If hasCode==false, do the choices; if true, skip and use the set variable.
+
+@if hasCode==false
+    Narrate: Which Spell Does {nameKami} Cast? 
+    @choice "Ball of Fire (deadly)"
+        @set choice1Kami="ball_of_fire"
+        @voice l58_Diana if:kamiVoice=="Diana"
+        @voice l58_Leigh if:kamiVoice=="Rayleigh"
+        kami: Yiah!
+        ;SFX crackling fire or flying fire sound
+        kaminarr: <i>A beam of energy burst from the end of my finger, aimed straight at the duo. One dove out of the way, barely escaping the inferno that blazed to life. The other bandit wasn’t so lucky.</i>
+        @shake goon1 count:5
+        @hide goon1
+        ; Text on screen. "Classic spellcaster!"
+    @choice "Missiles of Magic (non-deadly)"
+        @set choice1Kami="missiles_of_magic"
+        @voice l59_Diana if:kamiVoice=="Diana"
+        @voice l59_Leigh if:kamiVoice=="Rayleigh"
+        kami: Hiya!
+        ;SFX thin flying sound like a missile or dart
+        @shake kami hor:true
+        kaminarr: <i>Four projectiles of pure force shot from my hand and struck one bandit square in the chest. [shake goon1 hor:true] He cried in pain, then turned and limped from the fight.</i>
+        @char goon1 position:-12.00,-9.40,49.90 scale:.68 time:2
+        @hide goon1
+        kaminarr: <i>The remaining bandit growled.</i>
+        @voice l60_Sam if:ashhVoice=="Sam"
+        @voice l60_Sky if:ashhVoice=="Sky"
+        ashh: GET BACK HERE, COWARD!!!
+        ; Text on screen: "Effective!"
+    @choice "Wave of Thunder (non-deadly)"
+        @set choice1Kami="wave_of_thunder"
+        @voice l61_Diana if:kamiVoice=="Diana"
+        @voice l61_Leigh if:kamiVoice=="Rayleigh"
+        kami: Rrrah!
+        ;SFX handclap
+        ;SFX energy sound
+        kaminarr: <i>I slammed my hands together[shake kami count:1] and an energy wave rammed into the two enemies before me. One was thrown against the brick stone of the building across the street, crumpling to the ground unconscious.[char goon1 position:-9.00,-9.40,49.90 scale:.68] The other hit the ground but recovered and rose with murderous intent.</i>
+        @hide goon1
+        ;Text on screen: "Thunderstruck!"
+    @stop
+@else if:hasCode==true
+    @if choice1Kami=="ball_of_fire"
+        @voice l58_Diana if:kamiVoice=="Diana"
+        @voice l58_Leigh if:kamiVoice=="Rayleigh"
+        kami: Yiah!
+        ;SFX crackling fire or flying fire sound
+        kaminarr: <i>A beam of energy burst from the end of my finger, aimed straight at the duo. One dove out of the way, barely escaping the inferno that blazed to life. The other bandit wasn’t so lucky.</i>
+        @shake goon1 count:5
+        @hide goon1
+        ; Text on screen. "Classic spellcaster!"
+    @else if:choice1Kami=="missiles_of_magic"
+        @voice l61_Diana if:kamiVoice=="Diana"
+        @voice l61_Leigh if:kamiVoice=="Rayleigh"
+        kami: Rrrah!
+        ;SFX handclap
+        ;SFX energy sound
+        kaminarr: <i>I slammed my hands together[shake kami count:1] and an energy wave rammed into the two enemies before me. One was thrown against the brick stone of the building across the street, crumpling to the ground unconscious.[char goon1 position:-9.00,-9.40,49.90 scale:.68] The other hit the ground but recovered and rose with murderous intent.</i>
+        @hide goon1
+        ;Text on screen: "Thunderstruck!"
+    @else if:choice1Kami=="wave_of_thunder"
+        @voice l61_Diana if:kamiVoice=="Diana"
+        @voice l61_Leigh if:kamiVoice=="Rayleigh"
+        kami: Rrrah!
+        ;SFX handclap
+        ;SFX energy sound
+        kaminarr: <i>I slammed my hands together[shake kami count:1] and an energy wave rammed into the two enemies before me. One was thrown against the brick stone of the building across the street, crumpling to the ground unconscious.[char goon1 position:-9.00,-9.40,49.90 scale:.68] The other hit the ground but recovered and rose with murderous intent.</i>
+        @hide goon1
+        ;Text on screen: "Thunderstruck!"
+
+kaminarr: <i>The remaining bandit ran at me, swinging their sword in a deadly arc.[char goon2 position:2.00,-9.40,49.90 scale:.68 time:1] I jumped back just in time, [char kami.{artKami} position:6.00,-5.40,49.90 look:Left scale:.50 time:0.5]relying on my protection spell to send the blade glancing off an invisible barrier inches from my exposed skin.</i>
+
+@if hasCode==false
+    narrate: Which Spell Does {nameKami} Cast?
+    @choice "Electrified Grasp (non-deadly)"
+        @set choice2Kami="electrified_grasp"
+        @voice l62_Diana if:kamiVoice=="Diana"
+        @voice l62_Leigh if:kamiVoice=="Rayleigh"
+        kami: Back off!
+        ;SFX electric buzz or lighting crack
+        kaminarr: <i>I conjured electricity into the palm of my hand. Sparks flew between my fingertips and I struck in the center of their chest.[shake goon2 count:5 hor:true] Their eyes rolled to the back of their head and they collapsed.</i>
+        @hide goon2
+        ;Text on screen: "Zzzzapp!"
+    @choice "Hands of Burning (deadly)"
+        @set choice2Kami="hands_of_burning"
+        @voice l63_Diana if:kamiVoice=="Diana"
+        @voice l63_Leigh if:kamiVoice=="Rayleigh"
+        kami: Big mistake!
+        ;SFX fire crackling sound
+        kaminarr: <i>I touched my thumbs and forefingers together, calling forth a spray of fire. My enemy couldn't dodge the flames and I hit them point blank.[shake goon2 count:5 hor:true] They screamed and fell.</i>
+        @hide goon2
+        ;Text on screen: "Barbecued goon!"
+    @choice "Recommendation (non-deadly)"
+        @set choice2Kami="recommendation"
+        kaminarr: <i>I touched the snake tongue and honeycomb in my pouch of components and harnessed their energy to give a magically-empowered recommendation to the bandit.</i>
+        ;SFX hypnotic magic sound
+        @voice l64_Diana if:kamiVoice=="Diana"
+        @voice l64_Leigh if:kamiVoice=="Rayleigh"
+        kami: Go home and kiss your loved one! 
+        kaminarr: <i>The bandit’s eyes took on a glazed expression. They straightened up out of their fighting stance, gave a nod, and darted down the closest alley.</i>
+        @char goon2 position:-12.00,-9.40,49.90 scale:.68 time:1.5
+        @hide goon2
+        ;Text on screen: "Lover not assassin!"
+    @stop
+@else if:hasCode==true
+    @if choice2Kami=="electrified_grasp"
+        @voice l62_Diana if:kamiVoice=="Diana"
+        @voice l62_Leigh if:kamiVoice=="Rayleigh"
+        kami: Back off!
+        ;SFX electric buzz or lighting crack
+        kaminarr: <i>I conjured electricity into the palm of my hand. Sparks flew between my fingertips and I struck in the center of their chest.[shake goon2 count:5 hor:true] Their eyes rolled to the back of their head and they collapsed.</i>
+        @hide goon2
+        ;Text on screen: "Zzzzapp!"    
+    @else if:choice2Kami=="hands_of_burning"
+        @voice l63_Diana if:kamiVoice=="Diana"
+        @voice l63_Leigh if:kamiVoice=="Rayleigh"
+        kami: Big mistake!
+        ;SFX fire crackling sound
+        kaminarr: <i>I touched my thumbs and forefingers together, calling forth a spray of fire. My enemy couldn't dodge the flames and I hit them point blank.[shake goon2 count:5 hor:true] They screamed and fell.</i>
+        @hide goon2
+        ;Text on screen: "Barbecued goon!"
+    @else if:choice2Kami=="recommendation"
+        kaminarr: <i>I touched the snake tongue and honeycomb in my pouch of components and harnessed their energy to give a magically-empowered recommendation to the bandit.</i>
+        ;SFX hypnotic magic sound
+        @voice l64_Diana if:kamiVoice=="Diana"
+        @voice l64_Leigh if:kamiVoice=="Rayleigh"
+        kami: Go home and kiss your loved one! 
+        kaminarr: <i>The bandit’s eyes took on a glazed expression. They straightened up out of their fighting stance, gave a nod, and darted down the closest alley.</i>
+        @char goon2 position:-12.00,-9.40,49.90 scale:.68 time:1.5
+        @hide goon2
+        ;Text on screen: "Lover not assassin!"
+
+@char kami.{artKami} position:-6.00,-5.40,49.90 look:Left scale:.50 time:3.5
+@camera offset:-6.00,1.00,0.00 rotation:0.00,0.00,0.00 zoom:0.415 orthographic:true time:4
+kaminarr: <i>I breathed a sigh of relief. I hope that {nameVald}–</i>
+
+
+kaminarr: <i> An odd feeling hit my gut and I spun towards {nameVald}.[char kami.{artKami} position:-6.00,-5.40,49.90 look:Right scale:.50 time:0.5]<i>
+@camera offset:5.00,1.50,0.00 rotation:0.00,0.00,0.00 zoom:0.321 orthographic:true time:1
+@char vald.{artVald} position:2.00,-5.40,48.90 scale:.50
+@char ashh position:5.00,-5.40,49.90 scale:.50 look:Left
+kaminarr: <i>Ash of the Sanguine Vipers stood at her unprotected back, dagger raised high.</i>
+
+@goto .flicker
+
+
+#vald_battle
+
+@hide kami time:1
+@hide ashh time:1
+@hide goon1 time:1
+@hide goon2 time:1
+@char goon4 position:-6.00,-9.40,49.90 scale:.68 time:1
+;Text on screen. "Time for Battle!"
+
+valdnarr: <i>Two bandits with short swords eagerly jumped to engage me. The other two goons moved toward {nameKami} as she cast a spell to help ward off physical attacks.</i>
+
+@if hasCode==false
+    narrate: Which Action Does {nameVald} Take?
+    @choice "Attack With Your Sword (deadly)"
+        @set choice1Vald="attack_with_sword"
+        @voice l65_Amanda if:valdVoice=="Amanda"
+        @voice l65_Hannah if:valdVoice=="Hannah"
+        vald: Rrrah!
+        ;SFX single sword slash
+        @char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.5
+        valdnarr: <i>Doing what I do best, I raced headlong into combat with the closest bandit. My ferocity caught them off guard, and I cut them down in four swift moves.</i>
+        @hide goon3
+        @char vald.{artVald} position:3.00,-5.40,48.90 look:Right scale:.50 time:0.5
+        ;Text on screen: "Slice and Dice!" 
+    @choice "Try A Trick Move (non-deadly)"
+        @set choice1Vald="try_trick_move"
+        @voice l66_Amanda if:valdVoice=="Amanda"
+        @voice l66_Hannah if:valdVoice=="Hannah"
+        vald: Up here!
+        @shake vald count:1
+        ;SFX lobbing sound, like an artillery sailing
+        valdnarr: <i>I threw my sword into the air, distracting both bandits. Moving quickly, I smashed my fist into the nose of the closest with a satisfying crunch.[char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.5] Howling in pain, they turned and ran from the fight as I caught my blade.</i>
+        @char goon3 position:-12.00,-9.40,49.90 scale:.68 time:0.5
+        @hide goon3
+        ;Text on screen: "Trick Shot!" 
+    @choice "Use Footwork To Outmaneuver The Enemy (non-deadly)"
+        @set choice1Vald="use_footwork"
+        @voice l67_Amanda if:valdVoice=="Amanda"
+        @voice l67_Hannah if:valdVoice=="Hannah"
+        vald: Try and catch me!
+        ;SFX whirling sword sound OR whirlwind sound
+        valdnarr: <i>Zigzagging to the closest enemy,[char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.5] I feinted left and spun right.</i>[char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:0.3]
+        @shake vald count:2
+        @char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.3
+        valdnarr: <i>My foot landed on theirs, pinning them. Using my momentum I smashed my forehead into their nose. They reeled and ran, howling with pain into the night.</i>
+        @char goon3 position:-12.00,-9.40,49.90 scale:.68 time:0.5
+        @voice l60_Sam if:ashhVoice=="Sam"
+        @voice l60_Sky if:ashhVoice=="Sky"
+        ashh: GET BACK HERE, COWARD!!!
+        @hide goon3
+        @char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:0.3
+        ;Text on screen: "Fancy Feet!" 
+    @stop
+@else if:hasCode==true
+    @if choice1Vald=="attack_with_sword"
+        @voice l65_Amanda if:valdVoice=="Amanda"
+        @voice l65_Hannah if:valdVoice=="Hannah"
+        vald: Rrrah!
+        ;SFX single sword slash
+        @char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.5
+        valdnarr: <i>Doing what I do best, I raced headlong into combat with the closest bandit. My ferocity caught them off guard, and I cut them down in four swift moves.</i>
+        @hide goon3
+        @char vald.{artVald} position:3.00,-5.40,48.90 look:Right scale:.50 time:0.5
+        ;Text on screen: "Slice and Dice!" 
+    @else if:choice1Vald=="try_trick_move"
+        @voice l66_Amanda if:valdVoice=="Amanda"
+        @voice l66_Hannah if:valdVoice=="Hannah"
+        vald: Up here!
+        @shake vald count:1
+        ;SFX lobbing sound, like an artillery sailing
+        valdnarr: <i>I threw my sword into the air, distracting both bandits. Moving quickly, I smashed my fist into the nose of the closest with a satisfying crunch.[char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.5] Howling in pain, they turned and ran from the fight as I caught my blade.</i>
+        @char goon3 position:-12.00,-9.40,49.90 scale:.68 time:0.5
+        @hide goon3
+        ;Text on screen: "Trick Shot!" 
+    @else if:choice1Vald=="use_footwork"
+        @voice l67_Amanda if:valdVoice=="Amanda"
+        @voice l67_Hannah if:valdVoice=="Hannah"
+        vald: Try and catch me!
+        ;SFX whirling sword sound OR whirlwind sound
+        valdnarr: <i>Zigzagging to the closest enemy,[char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.5] I feinted left and spun right.</i>[char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:0.3]
+        @shake vald count:2
+        @char vald.{artVald} position:0.00,-5.40,48.90 look:Right scale:.50 time:0.3
+        valdnarr: <i>My foot landed on theirs, pinning them. Using my momentum I smashed my forehead into their nose. They reeled and ran, howling with pain into the night.</i>
+        @char goon3 position:-12.00,-9.40,49.90 scale:.68 time:0.5
+        @voice l60_Sam if:ashhVoice=="Sam"
+        @voice l60_Sky if:ashhVoice=="Sky"
+        ashh: GET BACK HERE, COWARD!!!
+        @hide goon3
+        @char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:0.3
+        ;Text on screen: "Fancy Feet!" 
+
+valdnarr: <i>The other bandit took a half step back, but then ground their teeth and set themselves for their fight.</i>
+@char goon4 position:-2.00,-9.40,49.90 scale:.68 time:1
+valdnarr: <i>They then ran at me, swinging their sword in a deadly arc. But it was a clear read and I brought my sword up in an easy block.</i>
+
+@if hasCode==false
+    narrate: Which Action Does {nameVald} Take? 
+    @choice "Disarm The Enemy (non-deadly)"
+        @set choice2Vald="disarm_the_enemy"
+        valdnarr: <i>I reached up, grabbed the handle of their weapon,[shake vald count:1 hor:true] and then drew a shallow cut along the bottom of their forearms with my sword. They released their weapon in shock and pain.</i>
+        ;SFX small dagger or knife hitting the ground
+        valdnarr: <i>It took a moment before they realized they were now unarmed, and unbridled fear took their face. I silently nodded up the street. They took the hint and scampered away into the nearest alley.</i>
+        @char goon4 position:-12.00,-9.40,49.90 scale:.68 time:1
+        @voice l68_Sam if:ashhVoice=="Sam"
+        @voice l68_Sky if:ashhVoice=="Sky"
+        ashh: COWARDS ALL OF YOU!!!
+        @hide goon4
+        ;Text on screen: "Too easy!" 
+    @choice "Counter The Attack With Dexterity (deadly)"
+        @set choice2Vald="attack_with_dexterity"
+        valdnarr: <i>Letting the weight of the enemy’s weapon slide off my sword, I stepped to the right and let their momentum carry them off balance.[char goon4 position:4.00,-9.40,46.90 scale:.68 time:1] Planting my outside foot, I used my body’s rotation to run my blade through the core of my foe.</i>
+        ;SFX large stabbing sound
+        @hide goon4 time:1
+        ;Text on screen: "Skewered goon!"
+    @choice "Counter The Attack With Strength (deadly)"
+        @set choice2Vald="attack_with_strength"
+        valdnarr: <i>Using the enhancement gifted by {nameKami}, I shoved the enemy’s blade up and away, throwing them off balance.[shake goon4 count:2 hor:true] Swinging the sword around,[char vald.{artVald} position:2.00,-3.40,48.90 look:Right scale:.50 time:0.3] I carried my blade above my head before bringing it down in a perfect vertical slice.</i>
+        @char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:0.3
+        ;SFX sound of something being split in half (pumpkin?) OR of an ax chopping something
+        @hide goon4
+        ;Text on screen: “Wood Chopper!”
+    @stop
+@else if:hasCode==true
+    @if choice2Vald=="disarm_the_enemy"
+        valdnarr: <i>I reached up, grabbed the handle of their weapon,[shake vald count:1 hor:true] and then drew a shallow cut along the bottom of their forearms with my sword. They released their weapon in shock and pain.</i>
+        ;SFX small dagger or knife hitting the ground
+        valdnarr: <i>It took a moment before they realized they were now unarmed, and unbridled fear took their face. I silently nodded up the street. They took the hint and scampered away into the nearest alley.</i>
+        @char goon4 position:-12.00,-9.40,49.90 scale:.68 time:1
+        @voice l68_Sam if:ashhVoice=="Sam"
+        @voice l68_Sky if:ashhVoice=="Sky"
+        ashh: COWARDS ALL OF YOU!!!
+        @hide goon4
+        ;Text on screen: "Too easy!" 
+    @else if:choice2Vald=="attack_with_dexterity"
+        valdnarr: <i>Letting the weight of the enemy’s weapon slide off my sword, I stepped to the right and let their momentum carry them off balance.[char goon4 position:4.00,-9.40,46.90 scale:.68 time:1] Planting my outside foot, I used my body’s rotation to run my blade through the core of my foe.</i>
+        ;SFX large stabbing sound
+        @hide goon4 time:1
+        ;Text on screen: "Skewered goon!"
+    @else if:choice2Vald=="attack_with_strength"
+        valdnarr: <i>Using the enhancement gifted by {nameKami}, I shoved the enemy’s blade up and away, throwing them off balance.[shake goon4 count:2 hor:true] Swinging the sword around,[char vald.{artVald} position:2.00,-3.40,48.90 look:Right scale:.50 time:0.3] I carried my blade above my head before bringing it down in a perfect vertical slice.</i>
+        @char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:0.3
+        ;SFX sound of something being split in half (pumpkin?) OR of an ax chopping something
+        @hide goon4
+        ;Text on screen: “Wood Chopper!”
+
+@wait 2
+@camera offset:5.00,1.50,0.00 rotation:0.00,0.00,0.00 zoom:0.321 orthographic:true time:1
+@char vald.{artVald} position:2.00,-5.40,48.90 scale:.50
+@char ashh position:5.00,-5.40,49.90 scale:.50 look:Left
+@goto .flicker
+
+#flicker
+@wait 2
+@voice l69_Diana if:kamiVoice=="Diana"
+@voice l69_Leigh if:kamiVoice=="Rayleigh"
+kami: Not my girl! 
+@char kami.{artKami} position:-6.00,-5.40,49.90 look:Right scale:.50 time:0.5
+
+@if narr=="kami"
+    @back id:MainBackground appearance:outside position:0.00,0.00,100.00 rotation:0.00,0.00,0.00 scale:1.00,1.00,1.00 tint:#C53E3EFF
+    kaminarr: <i>I flicked my fingers and a brilliant ray of red light flew across the street into the back of Ash’s hand, causing them to drop their weapon.</i>
+    ;SFX laser sound or other quick magic
+    @back id:MainBackground appearance:outside position:0.00,0.00,100.00 rotation:0.00,0.00,0.00 scale:1.00,1.00,1.00 tint:#FFFFFF    
+@if narr=="vald"
+    @back  tint:#C53E3EFF
+    valdnarr: <i>There was a bright red flash of light from behind me and a weapon clattered to the ground.[char vald.{artVald} look:Left] I spun to discover Ash holding their injured hand mere feet from me.</i>
+    @back tint:#FFFFFF
+    ;SFX laser sound or other quick magic
+
+@stopBgm goon_fight_ost
+@voice l70_Sam if:ashhVoice=="Sam"
+@voice l70_Sky if:ashhVoice=="Sky"
+@char ashh position:12.50,-5.40,49.90 scale:.50 look:Left time:1
+@hide ashh
+@wait 3
+
+@if narr=="kami"  
+    @sfx runfootstep
+    kaminarr: <i>Ash sprinted up the street toward the clock tower at the end of the road. They climbed the outer steps, threw us an ugly grimace, and disappeared into the shadows.</i>
+    ;SFX sound of someone running away
+@if narr=="vald" 
+    @sfx runfootstep
+    valdnarr: <i>Ash sprinted up the street toward the clock tower at the end of the road. They climbed the outer steps, threw us an ugly grimace, and disappeared into the shadows.</i>
+    ;SFX sound of someone running away
+
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:1
+@voice l71_Amanda if:valdVoice=="Amanda"
+@voice l71_Hannah if:valdVoice=="Hannah"
+vald: We can’t let them escape!
+
+@if narr=="kami"
+    @if blush=="rosy"
+        kaminarr: <i>Then she stopped and tossed me a grin.</i>
+    @else if:blush=="strawberry"
+        kaminarr: <i>Then she stopped and flashed me a grin that made my cheeks burn.</i>
+    @else if:blush=="fuchsia"
+        kaminarr: <i>Then she stopped and tossed me a self-satisfied grin that made me want her to pick me up and toss me in a bed.</i>
+    @else if:blush=="crimson"
+        kaminarr: <i>Then she tossed me a grin as big as the one I knew she'd have when I screamed her name in the darkness of our room.</i>
+    @voice l72_Amanda if:valdVoice=="Amanda"
+    @voice l72_Hannah if:valdVoice=="Hannah"
+    vald: Your girl, huh? 
+    @voice l73_Diana if:kamiVoice=="Diana"
+    @voice l73_Leigh if:kamiVoice=="Rayleigh"
+    kami: Don’t let it go to your head. 
+
+
+@if narr=="vald"
+    valdnarr: <i>Then it hit me what she had said.</i>
+    @char vald.{artVald} look:Right
+
+    @voice l72_Amanda if:valdVoice=="Amanda"
+    @voice l72_Hannah if:valdVoice=="Hannah"
+    vald: Your girl, huh? 
+
+    @if blush=="rosy"
+        valdnarr: <i>She responded with a blush that stopped my heart.</i>
+    @else if:blush=="strawberry"
+        valdnarr: <i>The blush on her cheeks set the molten desire in my stomach churning again.</i>
+    @else if:blush=="fuchsia"
+        valdnarr: <i>The rose on her cheeks had me wanting to pick her up and take her straight back to our room so I could make her whole body flush.</i>
+    @else if:blush=="crimson"
+        valdnarr: <i>The rose on her cheeks would shine even more with my wetness on it.</i>
+    @voice l73_Diana if:kamiVoice=="Diana"
+    @voice l73_Leigh if:kamiVoice=="Rayleigh"
+    kami: Don’t let it go to your head. 
+
+@slide vald.{artVald} to:100 time:1.5
+@hide vald
+@slide kami.{artKami} to:100 time:2
+@hide kami
+@stopSfx softwind
+@goto .clocktower
+#clocktower
+
+;BG Interior Clock Tower lower floor
+@back lowerclock transition:DropFade time:3 wait!
+@bgm sinister_ost fade:3 volume:0.5
+;SFX clock ticking sound OR pendulum swinging
+@sfx clocktick loop!
+@char vald.{artVald} position:12.00,-5.40,48.90 look:Right scale:.50 wait!
+@char vald.{artVald} position:2.00,-5.40,48.90 look:Right scale:.50 time:1
+@char kami.{artKami} position:12.00,-5.40,48.90 look:Right scale:.50 wait!
+@char kami.{artKami} position:-3.00,-5.40,48.90 look:Right scale:.50 time:1.5
+
+@if narr=="kami"
+    kaminarr: <i>The chill darkness of the high stone arches enveloped {nameVald} and I as we stepped across the closest threshold.</i>
+    kaminarr: <i>A voice floated from somewhere in the darkness.</i>
+@if narr=="vald"
+    valdnarr: <i>The chill darkness of the high stone arches enveloped {nameKami} and I as we stepped across the closest threshold.</i>
+    valdnarr: <i>A voice floated from somewhere in the darkness.</i>
+
+@voice l74_Sam if:ashhVoice=="Sam"
+@voice l74_Sky if:ashhVoice=="Sky"
+ashh: You really think you can defeat me? 
+
+@if narr=="kami"
+    ;SFX flying arrow sound
+    @sfx arrowfly
+    kaminarr: <i>An arrow streaked from the blackness above, striking {nameVald} in the shoulder.</i>
+    @shake kami
+    ;SFX flying arrow sound
+@if narr=="vald"
+    ;SFX flying arrow sound
+    @sfx arrowfly
+    valdnarr: <i>An arrow streaked from the blackness above, striking me in the shoulder.</i>
+    @shake kami
+
+@voice l75_Amanda if:valdVoice=="Amanda"
+@voice l75_Hannah if:valdVoice=="Hannah"
+vald: Gah!
+;SFX arrow entering body
+
+@voice l76_Diana if:kamiVoice=="Diana"
+@voice l76_Leigh if:kamiVoice=="Rayleigh"
+kami: Are you ok?! 
+
+@voice l77_Amanda if:valdVoice=="Amanda"
+@voice l77_Hannah if:valdVoice=="Hannah"
+vald: I’m fine!
+
+@if narr=="kami"
+    kaminarr: <i>Her eyes didn’t leave the shadows as she ripped the arrow from her body, unfazed.</i>
+    kaminarr: <i>Watching that, I'm not sure what was more dangerous right then: the assassin in the dark or my suddenly raging libido.</i>
+@if narr=="vald"
+    valdnarr: <i>I stared down the shadows as I ripped the arrow from my body.</i>
+    valdnarr: <i>Damn that hurt! But I'd worry about that after {nameKami} was entirely safe.</i>
+
+@voice l78_Sam if:ashhVoice=="Sam"
+@voice l78_Sky if:ashhVoice=="Sky"
+ashh: Hahaha! Come and catch me, if you can! 
+
+@if narr=="kami"
+    ;SFX flying arrow sound
+    @sfx arrowfly
+    @shake Camera
+    kaminarr: <i>Another arrow flew from the darkness, narrowly missing me.</i>
+@if narr=="vald"
+    ;SFX flying arrow sound
+    @sfx arrowfly
+    @shake Camera
+    valdnarr: <i>Another arrow flew from the darkness, narrowly missing {nameKami}. That viper!</i>
+
+@voice l79_Amanda if:valdVoice=="Amanda"
+@voice l79_Hannah if:valdVoice=="Hannah"
+vald: Oh, no you don't!! 
+
+@if narr=="kami"
+    kaminarr: <i>In a rage, {nameVald} dashed toward the stairs along the wall and began to climb.</i>
+    @char vald.{artVald} position:12.00,-5.40,48.90 look:Right scale:.50 time:1
+    @hide vald
+
+    kaminarr: <i>Protecting me won't be so hot if you get yourself killed, {nameVald}.</i>
+
+    @if hasCode==false
+        narrate: What does {nameKami} do? 
+        @choice "Run up the stairs (non-deadly)"
+            @set choice3Kami="run_up_stairs"
+            kaminarr: <i>Rushing towards an arrow only gets the arrow in your head faster. I cast a shell spell around me[char kami.{artKami} position:1.00,-5.40,48.90 look:Right scale:.50 time:1] and placed my foot on the first stair[sfx arrowfly] – where an arrow hit my barrier and bounced off ineffectively. Moving quickly, I pursued my partner.</i>
+            ;SFX sound of running up wood or stairs
+            @char kami.{artKami} position:13.00,-5.40,48.90 look:Right scale:.50 time:1
+
+        @choice "Use a spell to fly (non-deadly)"
+            @set choice3Kami="spell_to_fly"
+            kaminarr: <i>With a magical phrase and a sigil drawn in the air,[char kami.{artKami} position:1.00,-3.40,48.90 look:Right scale:.50 time:2.5] I lifted from the ground light as a feather.[sfx arrowfly] I was almost too late to see a third arrow flying toward my face. A quick wave raised another magical barrier, and the arrow bounced off harmlessly.</i>
+            ;SFX magical levitation sound
+            @voice l80_Sam if:ashhVoice=="Sam"
+            @voice l80_Sky if:ashhVoice=="Sky"
+            ashh: HISS
+            kaminarr: <i>I flew and reached the uppermost landing of the clock tower.</i>
+            @char kami.{artKami} position:1.00,5.40,48.90 look:Right scale:.50 time:1
+        @choice "Cast Ball of Fire (non-deadly)"
+            @set choice3Kami="ball_of_fire"
+            kaminarr: <i>I sent a beam of fire shooting up into the darkness. The ball exploded in a wave of heat and light,[back tint:#F2AD6A] brightening the inside of the tower enough to see the stairs that wrap along the inside all the way to the summit.</i>
+            ;SFX crackling fire or flying fire sound
+            kaminarr: <i>Halfway up, I could see Ash looking down at me with a gloating smile.</i>
+            @voice l81_Sam if:ashhVoice=="Sam"
+            @voice l81_Sky if:ashhVoice=="Sky"
+            ashh: You’re going to have to do better than that old trick to catch me, spellcaster!
+            @back tint:#FFFFFF
+            kaminarr: <i>I gritted my teeth in frustration and ran after {nameVald}.</i>
+            @char kami.{artKami} position:13.00,-5.40,48.90 look:Right scale:.50 time:1
+        @stop
+    @else if:hasCode==true
+        @if choice3Kami=="run_up_stairs"
+            kaminarr: <i>Rushing towards an arrow only gets the arrow in your head faster. I cast a shell spell around me[char kami.{artKami} position:1.00,-5.40,48.90 look:Right scale:.50 time:1] and placed my foot on the first stair[sfx arrowfly] – where an arrow hit my barrier and bounced off ineffectively. Moving quickly, I pursued my partner.</i>
+            ;SFX sound of running up wood or stairs
+            @char kami.{artKami} position:13.00,-5.40,48.90 look:Right scale:.50 time:1
+        @else if:choice3Kami=="spell_to_fly"
+            kaminarr: <i>With a magical phrase and a sigil drawn in the air,[char kami.{artKami} position:1.00,-3.40,48.90 look:Right scale:.50 time:2.5] I lifted from the ground light as a feather.[sfx arrowfly] I was almost too late to see a third arrow flying toward my face. A quick wave raised another magical barrier, and the arrow bounced off harmlessly.</i>
+            ;SFX magical levitation sound
+            @voice l80_Sam if:ashhVoice=="Sam"
+            @voice l80_Sky if:ashhVoice=="Sky"
+            ashh: HISS
+            kaminarr: <i>I flew and reached the uppermost landing of the clock tower.</i>
+            @char kami.{artKami} position:1.00,5.40,48.90 look:Right scale:.50 time:1
+        @else if:choice3Kami=="ball_of_fire"
+            kaminarr: <i>I sent a beam of fire shooting up into the darkness. The ball exploded in a wave of heat and light,[back tint:#F2AD6A] brightening the inside of the tower enough to see the stairs that wrap along the inside all the way to the summit.</i>
+            ;SFX crackling fire or flying fire sound
+            kaminarr: <i>Halfway up, I could see Ash looking down at me with a gloating smile.</i>
+            @voice l81_Sam if:ashhVoice=="Sam"
+            @voice l81_Sky if:ashhVoice=="Sky"
+            ashh: You’re going to have to do better than that old trick to catch me, spellcaster!
+            @back tint:#FFFFFF
+            kaminarr: <i>I gritted my teeth in frustration and ran after {nameVald}.</i>
+            @char kami.{artKami} position:13.00,-5.40,48.90 look:Right scale:.50 time:1
+    @char vald.{artVald} position:-3.00,-5.40,48.90 scale:.50 time:1
+    @char kami.{artKami} position:7.00,-5.40,48.90 scale:.50 time:1
+    
+    @if blush=="rosy"
+        kaminarr: <i>When I caught up with {nameVald},[camera offset:-3.00,-0.50,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:1] I couldn't help appreciate how nice she looked.</i>
+    @else if:blush=="strawberry"
+        kaminarr: <i>When I caught up with {nameVald},[camera offset:-3.00,-0.50,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:1] her toned legs grabbed my eyes and my desires, distracting me yet again from the danger.</i>
+    @else if:blush=="fuchsia"
+        kaminarr: <i>When I caught up with {nameVald},[camera offset:-3.00,-0.50,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:1] her thighs flexed as she leapt to the top, and I suddenly imagined them on either side of my face.</i>
+    @else if:blush=="crimson"
+        kaminarr: <i>When I caught up with {nameVald},[camera offset:-3.00,-0.50,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:1] my face froze right behind her toned ass and I had to stop myself from leaning forward to kiss it. Or lick it.</i>
+    kaminarr: <i>Get it together, {nameKami}!</i>
+    @camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:1
+
+    kaminarr: <i>I shook my head to clear it and joined {nameVald} at the top landing of the clock tower.</i>
+
+@if narr=="vald"
+    @if hasCode==false
+        narrate: What Does {nameVald} Do?
+        @choice "Try A Combo Move With {nameKami} (non-deadly)"
+            @set choice3Vald="try_combo_move"
+            @voice l82_Amanda if:valdVoice=="Amanda"
+            @voice l82_Hannah if:valdVoice=="Hannah"
+            vald: Spider Catches the Sparrow?
+            @voice l83_Diana if:kamiVoice=="Diana"
+            @voice l83_Leigh if:kamiVoice=="Rayleigh"
+            kami: Let’s do it!
+            @char kami.{artKami} position:-7.00,-5.40,48.90 look:Right time:1.5
+            valdnarr: <i>{nameKami} took several steps back as I braced myself. At a run, she wove a spell and stepped into my waiting hands. Together we launched her high into the air.</i>
+            @char kami.{artKami} position:1.00,-5.40,48.90 look:Right time:1
+            @char kami.{artKami} position:1.00,-1.40,48.90 look:Right time:0.5
+            valdnarr: <i>She released her spell at the peak, shooting a mass of spider webs up into the darkness.[back tint:#4A4062] I caught her before she hit the ground and listened intently above.</i>
+            @char kami.{artKami} position:1.00,-5.40,48.90 look:Right time:1
+            @char kami.{artKami} position:-2.00,-5.40,48.90 look:Right time:1
+            ;SFX spiderman web slinging sound?
+            @voice l84_Sam if:ashhVoice=="Sam"
+            @voice l84_Sky if:ashhVoice=="Sky"
+            ashh: Oooo very clever! But I won't be caught in your web that easily!
+            @back tint:#FFFFFF
+            valdnarr: <i>We ground our teeth and ran for the stairs. Halfway up we encountered the webbing. Without breaking stride, {nameKami} sent a beam of magical flame over my shoulder and caught the web on fire.</i> 
+            ;SFX crackling fire or flying fire sound
+            valdnarr: <i>Damn, that flame is almost as hot as its caster.</i>
+            valdnarr: <i>The flames made quick work of the web and we made it to the top landing of the tower.</i>
+            @char vald.{artVald} position:12.00,-5.40,48.90 look:Left time:1
+            @char kami.{artKami} position:12.00,-5.40,48.90 look:Left time:1.5
+            @hide vald
+            @hide kami
+        @choice "Run Up The Stairs Along The Wall (non-deadly)"
+            @set choice3Vald="run_up_stairs"
+            @char vald.{artVald} look:Left position:2.00,-5.40,48.90
+            valdnarr: <i>I began sprinting for the stairs that curved along the inside of the wall. As I hit the first stair, I realized that {nameKami} was planning to follow. I stopped and stooped down, catching her in a piggyback.</i>
+            @char kami.{artKami} position:0.50,-5.40,49.90 look:Right time:1
+            @voice l85_Diana if:kamiVoice=="Diana"
+            @voice l85_Leigh if:kamiVoice=="Rayleigh"
+            kami: Oh!
+            valdnarr: <i>I felt my face warm as her bosoms pressed up against me. Not letting the knowledge slow me down, I bounded up the stairs.</i>
+            ;SFX sound of running up wood or stairs
+            @char vald.{artVald} position:4.00,-5.40,48.90 look:Left time:1
+            @char kami.{artKami} position:4.00,-5.40,49.90 look:Left time:1.5
+            valdnarr: <i>It was only a few steps before I heard her speak an incantation. The world turned to a blur[blur] as I began moving in supernatural haste. The spell left my body as we hit the top landing of the tower.</i>
+            @char vald.{artVald} position:12.00,-5.40,48.90 look:Left time:1
+            @char kami.{artKami} position:12.00,-5.40,49.90 look:Left time:1
+            @hide vald
+            @hide kami
+            @blur power:0
+        @choice "Throw Your Sword Blindly Into The Dark (non-deadly)" 
+            @set choice3Vald="throw_your_sword"
+            @char vald.{artVald} look:Left time:1
+            valdnarr: <i>I turned my sword to hold it like a javelin.[shake count:1 power:0.7] Blindly, I hurled it into the dark in the direction of that annoying voice. The clatter the sword made was deafening as it hit the ground, accompanied by the taunting laughter of Ash.</i>
+            ;SFX taunting laughter
+            ;SFX sword or other metal clanging on stone ground
+            @voice l86_Sam if:ashhVoice=="Sam"
+            @voice l86_Sky if:ashhVoice=="Sky"
+            ashh: Hahaha! Poor melee fighter. Did you ever even train?
+            @voice l87_Amanda if:valdVoice=="Amanda"
+            @voice l87_Hannah if:valdVoice=="Hannah"
+            vald: I just want the pleasure of silencing you with my bare hands.
+            @char kami.{artKami} position:12.00,-5.40,48.90 look:Left time:1
+            valdnarr: <i>I sprinted for the wall,[char vald.{artVald} position:12.00,-5.40,48.90 look:Left time:1] running to keep up to {nameKami} as she began to magically fly. We both zipped up the clock tower and made it to the top landing.</i>
+            @hide kami
+            @hide vald
+        @stop
+    @else if:hasCode==true
+        @if choice3Vald=="try_combo_move"
+            @voice l82_Amanda if:valdVoice=="Amanda"
+            @voice l82_Hannah if:valdVoice=="Hannah"
+            vald: Spider Catches the Sparrow?
+            @voice l83_Diana if:kamiVoice=="Diana"
+            @voice l83_Leigh if:kamiVoice=="Rayleigh"
+            kami: Let’s do it!
+            @char kami.{artKami} position:-7.00,-5.40,48.90 look:Right time:1.5
+            valdnarr: <i>{nameKami} took several steps back as I braced myself. At a run, she wove a spell and stepped into my waiting hands. Together we launched her high into the air.</i>
+            @char kami.{artKami} position:1.00,-5.40,48.90 look:Right time:1
+            @char kami.{artKami} position:1.00,-1.40,48.90 look:Right time:0.5
+            valdnarr: <i>She released her spell at the peak, shooting a mass of spider webs up into the darkness.[back tint:#4A4062] I caught her before she hit the ground and listened intently above.</i>
+            @char kami.{artKami} position:1.00,-5.40,48.90 look:Right time:1
+            @char kami.{artKami} position:-2.00,-5.40,48.90 look:Right time:1
+            ;SFX spiderman web slinging sound?
+            @voice l84_Sam if:ashhVoice=="Sam"
+            @voice l84_Sky if:ashhVoice=="Sky"
+            ashh: Oooo very clever! But I won't be caught in your web that easily!
+            @back tint:#FFFFFF
+            valdnarr: <i>We ground our teeth and ran for the stairs. Halfway up we encountered the webbing. Without breaking stride, {nameKami} sent a beam of magical flame over my shoulder and caught the web on fire.</i> 
+            ;SFX crackling fire or flying fire sound
+            valdnarr: <i>Damn, that flame is almost as hot as its caster.</i>
+            valdnarr: <i>The flames made quick work of the web and we made it to the top landing of the tower.</i>
+            @char vald.{artVald} position:12.00,-5.40,48.90 look:Left time:1
+            @char kami.{artKami} position:12.00,-5.40,48.90 look:Left time:1.5
+            @hide vald
+            @hide kami
+        @else if:choice3Vald=="run_up_stairs"
+            @char vald.{artVald} look:Left position:2.00,-5.40,48.90
+            valdnarr: <i>I began sprinting for the stairs that curved along the inside of the wall. As I hit the first stair, I realized that {nameKami} was planning to follow. I stopped and stooped down, catching her in a piggyback.</i>
+            @char kami.{artKami} position:0.50,-5.40,49.90 look:Right time:1
+            @voice l85_Diana if:kamiVoice=="Diana"
+            @voice l85_Leigh if:kamiVoice=="Rayleigh"
+            kami: Oh!
+            valdnarr: <i>I felt my face warm as her bosoms pressed up against me. Not letting the knowledge slow me down, I bounded up the stairs.</i>
+            ;SFX sound of running up wood or stairs
+            @char vald.{artVald} position:4.00,-5.40,48.90 look:Left time:1
+            @char kami.{artKami} position:4.00,-5.40,49.90 look:Left time:1.5
+            valdnarr: <i>It was only a few steps before I heard her speak an incantation. The world turned to a blur[blur] as I began moving in supernatural haste. The spell left my body as we hit the top landing of the tower.</i>
+            @char vald.{artVald} position:12.00,-5.40,48.90 look:Left time:1
+            @char kami.{artKami} position:12.00,-5.40,49.90 look:Left time:1
+            @hide vald
+            @hide kami
+            @blur power:0
+        @else if:choice3Vald=="throw_your_sword"
+            @char vald.{artVald} look:Left time:1
+            valdnarr: <i>I turned my sword to hold it like a javelin.[shake count:1 power:0.7] Blindly, I hurled it into the dark in the direction of that annoying voice. The clatter the sword made was deafening as it hit the ground, accompanied by the taunting laughter of Ash.</i>
+            ;SFX taunting laughter
+            ;SFX sword or other metal clanging on stone ground
+            @voice l86_Sam if:ashhVoice=="Sam"
+            @voice l86_Sky if:ashhVoice=="Sky"
+            ashh: Hahaha! Poor melee fighter. Did you ever even train?
+            @voice l87_Amanda if:valdVoice=="Amanda"
+            @voice l87_Hannah if:valdVoice=="Hannah"
+            vald: I just want the pleasure of silencing you with my bare hands.
+            @char kami.{artKami} position:12.00,-5.40,48.90 look:Left time:1
+            valdnarr: <i>I sprinted for the wall,[char vald.{artVald} position:12.00,-5.40,48.90 look:Left time:1] running to keep up to {nameKami} as she began to magically fly. We both zipped up the clock tower and made it to the top landing.</i>
+            @hide kami
+            @hide vald
+
+;BG SCENE 3: Interior Clock Tower upper floor
+@back upperclock transition:DropFade time:2
+
+@stopBgm sinister_ost fade:3
+@bgm adventure_ost fade:5 volume:0.5
+
+@char vald.{artVald} position:-2.00,-5.40,48.90 look:Left time:1
+@char kami.{artKami} position:-6.00,-5.40,48.90 look:Right time:1
+
+@if narr=="kami"
+    kaminarr: <i>{nameVald} and I cast our eyes around the gloom, looking for any sign of movement.</i>
+@if narr=="vald"
+    valdnarr: <i>{nameKami} and I cast our eyes around the gloom, looking for any sign of movement.</i>
+
+@voice l88_Diana if:kamiVoice=="Diana"
+@voice l88_Leigh if:kamiVoice=="Rayleigh"
+kami: Candle in the Night?
+
+@voice l89_Amanda if:valdVoice=="Amanda"
+@voice l89_Hannah if:valdVoice=="Hannah"
+vald: Smart.
+
+@if blush=="rosy"
+    @voice l90_Diana if:kamiVoice=="Diana"
+    @voice l90_Leigh if:kamiVoice=="Rayleigh"
+    kami: Of course it is.
+@else if:blush=="strawberry"
+    @voice l91_Diana if:kamiVoice=="Diana"
+    @voice l91_Leigh if:kamiVoice=="Rayleigh"
+    kami: Smart girls expect rewards after.
+@else if:blush=="fuchsia"
+    @voice l92_Diana if:kamiVoice=="Diana"
+    @voice l92_Leigh if:kamiVoice=="Rayleigh"
+    kami: That's why you want me so bad.
+@else if:blush=="crimson"
+    @voice l93_Diana if:kamiVoice=="Diana"
+    @voice l93_Leigh if:kamiVoice=="Rayleigh"
+    kami: I'm good at setting the night on fire, sweetie.
+
+@if narr=="kami"
+    ;SFX arrow flying through air    
+    kaminarr: <i>From within the pitch darkness of the bell above, [sfx arrowfly]another arrow streaked toward me, aimed straight at my heart.</i>
+@if narr=="vald"
+    ;SFX arrow flying through air
+    valdnarr: <i>From within the pitch darkness of the bell above, [sfx arrowfly]another arrow streaked toward {nameKami}, aimed straight at her heart.</i>
+
+@voice l94_Amanda if:valdVoice=="Amanda"
+@voice l94_Hannah if:valdVoice=="Hannah"
+vald: Look out!
+
+@char vald.{artVald} position:-3.50,-5.40,49.90 look:Left time:0.5 !wait
+@char kami.{artKami} position:-5.00,-5.40,48.90 look:Right time:0.5
+@camera offset:-4.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.200 orthographic:true time:1.5
+@if narr=="kami"
+    kaminarr: <i>{nameVald}’s hand wrapped around my waist as she tugged me to her, and I slammed against her muscled form.</i>
+@if narr=="vald"
+    valdnarr: <i>I wrapped my hand around her waist and tugged her to me, encircling her soft body in protection.</i>
+
+@if blush=="rosy"
+    @voice l95_Amanda if:valdVoice=="Amanda"
+    @voice l95_Hannah if:valdVoice=="Hannah"
+    vald: That was a close one. 
+@else if:blush=="strawberry"
+    @voice l96_Amanda if:valdVoice=="Amanda"
+    @voice l96_Hannah if:valdVoice=="Hannah"
+    vald: Strong girls give more rewards than even smart girls expect.
+@else if:blush=="fuchsia"
+    @voice l97_Amanda if:valdVoice=="Amanda"
+    @voice l97_Hannah if:valdVoice=="Hannah"
+    vald: Once this is over, I'll show you just how right you are.
+@else if:blush=="crimson"
+    @voice l98_Amanda if:valdVoice=="Amanda"
+    @voice l98_Hannah if:valdVoice=="Hannah"
+    Vald: Once this is over, let’s find out just how much heat we can create together.
+
+@if narr=="kami"
+    kaminarr: <i>My mind went blank feeling all the places where our bodies touched. It took a heartbeat before I remembered we were executing a plan.</i>
+@if narr=="vald"
+    valdnarr: <i>Time stood still for a moment as we held each other. Why were we wasting time fighting elven thugs when we could be doing so much else?</i>
+
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:2
+@voice l99_Diana if:kamiVoice=="Diana"
+@voice l99_Leigh if:kamiVoice=="Rayleigh"
+kami: P-plan!
+
+@if narr=="kami"
+    kaminarr: <i>{nameVald} closed her eyes as I conjured, aiming at the bell. [sfx shimmer] [back tint:#FAF011] [sun power:0.9 time:1] Light as bright as day erupted from inside it, revealing our enemy pressed into the concave peak, shrinking away from the brilliant flash.</i>
+    ;SFX shimmering sound or other to indicate brilliant magical light
+    ;bright flash and light on screen
+@if narr=="vald"
+    valdnarr: <i>I closed my eyes as {nameKami} conjured her spell. [sfx shimmer] [back tint:#FAF011] [sun power:0.9 time:1] From behind my eyelids, I saw light as bright as day erupt from above. I glanced up to see our enemy pressed into the concave peak of the bell, shrinking away from the brilliant flash.</i>
+    ;SFX shimmering sound or other to indicate brilliant magical light
+    ;bright flash and light on screen
+
+@char ashh position:7.00,-4.40,48.90 scale:.50
+@voice l100_Sam if:ashhVoice=="Sam"
+@voice l100_Sky if:ashhVoice=="Sky"
+ashh: HISSSSS!!!
+
+@if narr=="kami"
+    kaminarr: <i>Is hissing a requirement of being a Sanguine Viper?</i>
+@if narr=="vald"
+    valdnarr: <i>Is hissing a requirement of being a Sanguine Viper?</i>
+
+@voice l101_Amanda if:valdVoice=="Amanda"
+@voice l101_Hannah if:valdVoice=="Hannah"
+vald: Now you're done!!
+
+@if narr=="kami"
+    kaminarr: <i>With a running leap, {nameVald} launched herself into the bell [sfx largebell]at Ash.</i>
+    @char vald.{artVald} position:6.00,-5.40,48.90 look:Left time:1
+    @shake ashh count:4 !wait
+    @shake vald hor! !ver count:5
+    @shake Camera count:5
+    @sfx largebell
+    ;SFX large bell rings
+
+@if narr=="vald"
+    valdnarr: <i>I launched myself into the bell [sfx largebell]at Ash.[char vald.{artVald} position:3.00,-5.40,48.90 look:Left time:1] Using the pommel of my sword I struck the rogue in the temple,[shake Camera count:5] causing their head to snap back[shake ashh count:5 hor!] and smack the side of the bell,[sfx largebell] knocking them unconscious.</i>
+    @sfx largebell
+    ;SFX large bell rings
+
+
+;This might be an SFX instead of line
+@voice l102_Sam if:ashhVoice=="Sam"
+@voice l102_Sky if:ashhVoice=="Sky"
+;ashh: Scream
+
+@back tint:#FFFFFF time:1
+@sun power:0
+@stopSfx clocktick
+
+@if narr=="kami"
+    @char vald.{artVald} position:0.00,-5.40,48.90 look:Right time:1
+    kaminarr: <i>{nameVald} landed beside me, an unconscious Ash over one shoulder.</i>
+    ;SFX something large leaping nearby or of straining wood
+@if narr=="vald"
+    valdnarr: <i>I grabbed the rogue’s limp form and threw them over my shoulder. Lithely, I landed beside {nameKami}.</i>
+    @char vald.{artVald} position:0.00,-5.40,48.90 look:Right time:1
+    ;SFX something large leaping nearby or of straining wood
+
+@voice l103_Amanda if:valdVoice=="Amanda"
+@voice l103_Hannah if:valdVoice=="Hannah"
+vald: They should be out for a while.
+@hide ashh time:1
+@stopBgm adventure_ost fade:3
+@bgm romance_ost fade:5 volume:0.5
+
+@if narr=="kami"
+    kaminarr: <i>Just then, I caught a glimpse of the city behind {nameVald} that took my breath away.[char kami.{artKami} position:3.00,-5.40,48.90 look:Right time:2] I stepped around her, toward the edge of the tower, holding myself steady against the pillar closest to me.</i>
+    kaminarr: <i>There had been some beautiful sights in my time as an adventurer, but this view was among the most spectacular.</i>
+    kaminarr: <i>I heard the thud of Ash’s body hitting the ground, followed by {nameVald}’s footsteps as she joined me at the edge.</i>
+@if narr=="vald"
+    valdnarr: <i>Just then, she caught a glimpse of something behind me that caused her jaw to drop.[char kami.{artKami} position:3.00,-5.40,48.90 look:Right time:2] She stepped around me, toward the edge of the tower, holding herself steady against the pillar closest to us.</i>
+    @char vald.{artVald} position:-1.00,-5.40,48.90 look:Left time:1    
+    valdnarr: <i>I watched my beautiful adventuring partner gaze out at the twinkling city lights.</i>
+    valdnarr: <i>This open wonder for the world was one of many reasons why I fell in love with her so long ago.</i>
+    valdnarr: <i>I dropped Ash’s body unceremoniously on the ground and followed {nameKami} to the edge.</i>
+
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:2
+@if blush=="rosy"
+    @voice l104_Diana if:kamiVoice=="Diana"
+    @voice l104_Leigh if:kamiVoice=="Rayleigh"
+    kami: You know, between the daring rescue and the breathtaking view, a girl might think this was a romantic experience. 
+@else if:blush=="strawberry"
+    @voice l105_Diana if:kamiVoice=="Diana"
+    @voice l105_Leigh if:kamiVoice=="Rayleigh"
+    kami: You know, between the daring rescue and the breathtaking view, a girl might think you had feelings for her.
+@else if:blush=="fuchsia"
+    @voice l106_Diana if:kamiVoice=="Diana"
+    @voice l106_Leigh if:kamiVoice=="Rayleigh"
+    kami: You know, between the daring rescue and the breathtaking view, a girl might think you were trying to seduce her. 
+@else if:blush=="crimson"
+    @voice l107_Diana if:kamiVoice=="Diana"
+    @voice l107_Leigh if:kamiVoice=="Rayleigh"
+    kami: How bad do I have to be for you to carry me off like that?
+
+@if narr=="kami"
+    kaminarr: <i>{nameVald} gave a contented sigh of appreciation and I turned to look at her.[char kami.{artKami} position:2.00,-5.40,48.90 look:Left time:1] She wasn't looking at the city, but at me. I took a step closer, her body once again pressed against mine.</i>
+@if narr=="vald"
+    valdnarr: <i>I couldn't help my soft sigh of appreciation. She turned to look at me[char kami.{artKami} position:2.00,-5.40,48.90 look:Left time:1] and, for some reason, seemed surprised that I was looking at her and not the city. Didn't she understand that she was the most beautiful sight in the world?</i>
+    valdnarr: <i>She took a step closer, her body once again pressed to mine.</i>
+
+@camera offset:1.00,2.50,0.00 rotation:0.00,0.00,0.00 zoom:0.570 orthographic:true time:2
+@if blush=="rosy"
+    @voice l108_Amanda if:valdVoice=="Amanda"
+    @voice l108_Hannah if:valdVoice=="Hannah"
+    vald: This girl would agree. And romantic moments are made for…
+@else if:blush=="strawberry"
+    @voice l109_Amanda if:valdVoice=="Amanda"
+    @voice l109_Hannah if:valdVoice=="Hannah"
+    vald: The girl would be right. I've been in love with you for a long time, my magical partner…
+@else if:blush=="fuchsia"
+    @voice l110_Amanda if:valdVoice=="Amanda"
+    @voice l110_Hannah if:valdVoice=="Hannah"
+    vald: And don't you think it's about time I did? Tonight will be the first of many… 
+@else if:blush=="crimson"
+    @voice l111_Amanda if:valdVoice=="Amanda"
+    @voice l111_Hannah if:valdVoice=="Hannah"
+    vald: If that pretty mouth is as dirty as I think it is, you’re bad enough already.
+
+;CG kiss between vald and kami
+@hide kami
+@hide vald
+@wait 2
+@camera offset:0.00,0.00,0.00 rotation:0.00,0.00,0.00 zoom:0.000 orthographic:true time:2
+@char hxh scale:1.2 pos:50,0 if:speciesVald=="human"&&speciesKami=="human"
+@char hxt scale:1.2 pos:50,0 if:speciesVald=="human"&&speciesKami=="tiefling"
+@char txh scale:1.2 pos:50,0 if:speciesVald=="tiefling"&&speciesKami=="human"
+@char txt scale:1.2 pos:50,0 if:speciesVald=="tiefling"&&speciesKami=="tiefling"
+
+;This final line is text without a character name to it.
+@if blush=="rosy"
+    narrate: "Since the invention of the kiss there have been five kisses that were rated the most passionate, the most pure. This one left them all behind."
+@else if:blush=="strawberry"
+    narrate: "Since the first two people fell in love, there have been five loves rated the highest the world has seen. Their love exceeded them all."
+@else if:blush=="fuchsia"
+    narrate: "Since the first person cried aloud in passionate lovemaking, five cries have been rated the most ecstatic, the most shattering. Their cries of passion beat them all, ringing as loud as the clock bells ushering in a new day."
+@else if:blush=="crimson"
+    narrate: "Since the invention of the orgasm, five have been strong enough to destroy villages. That night the Goddess of Love, recognizing their passion, transported the lovers to the top of a mountain, where they safely turned the natural formation to a pile of rubble."
+
+@hide vald
+@hide kami
+
+@if hasCode==true
+    narrate: {finalMessage}
+@else if:hasCode==false
+    ;Final screen. The player can put in a final Valentine's Day message.
+    ;Default text is: "Thank you for being my adventuring partner. Happy Valentine’s Day!"
+    ;Text box is editable, or there is text saying, "Type your Valentine's message here."
+    narrate: Do you wish to send this story to a friend?
+    @choice "Yes" set:sending=true
+    @choice "No" set:sending=false
+    @stop
+    @if sending==true
+        @input sendee summary:"Put the name of the person you are sending this to here." value:"Dear Reader"
+        @stop
+        @input sender summary:"Put your name here." value:"Alternative Wonders Studio"
+        @stop
+        @input finalMessage summary:"Type your Valentine's message here." value:"Thank you for being my adventuring partner. Happy Valentine’s Day!"
+        @stop
+        ;generate gameCode
+        ;narrate: The next screen will have a code to send. Copy it and send it to your friend and give them a link to the game. When it starts, they can paste the code in and play the game as you have configured it.
+        ;narrate: {gameCode}
+@movie credits
+;@stop
+@stopBgm romance_ost fade:3
+
+@if hasCode==true
+    narrate: {finalMessage}
+    narrate: You can now go to the Title screen and create your own story. If you would like to replay it in the exact same way, close the game, open it again, and re-enter the code.
+    @set hasCode==false
+    @title
+@else if:hasCode==false
+    narrate: Replay and try different choices!
+    @title
+;@else
+;    @title
+@stop

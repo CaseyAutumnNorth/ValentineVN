@@ -1,0 +1,322 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06386b10f29c770408fc88b031c4d7fd, type: 3}
+  m_Name: EditorResources
+  m_EditorClassIdentifier: 
+  resourceCategories:
+  - Id: TextPrinters/073f03d5-2acf-4ecd-8af0-65e16202f58b
+    Resources:
+    - name: Dialogue
+      pathPrefix: TextPrinters
+      guid: 1bc08ccd31adff6439e97161aa6e1d8b
+  - Id: TextPrinters/1a99d17e-fdf2-4996-9c99-c9d54c283aea
+    Resources:
+    - name: Fullscreen
+      pathPrefix: TextPrinters
+      guid: c87cebd3f0d4f174789cd351ce9591c4
+  - Id: TextPrinters/9f1f93cc-dcee-42bc-9b0d-f6ead4e81e52
+    Resources:
+    - name: Wide
+      pathPrefix: TextPrinters
+      guid: 781828b806deb1e4cbf50ef9de41da10
+  - Id: TextPrinters/01ae5574-f254-4c0a-bcb7-ec4d5daf3452
+    Resources:
+    - name: Chat
+      pathPrefix: TextPrinters
+      guid: 6f9836a3c4f777741b1962979d97e485
+  - Id: TextPrinters/37694504-065a-45e5-b834-2a496249d97b
+    Resources:
+    - name: Bubble
+      pathPrefix: TextPrinters
+      guid: b47d9659b2be5ee4e95a776f213c9d4b
+  - Id: ChoiceHandlers/e9001550-cd56-435b-8ee1-517b2ebb84ee
+    Resources:
+    - name: ButtonList
+      pathPrefix: ChoiceHandlers
+      guid: 1f6aa29000e839c409e6a9c0704adc96
+  - Id: ChoiceHandlers/026e76c0-f05a-4310-a09b-98a0fcedfcc0
+    Resources:
+    - name: ButtonArea
+      pathPrefix: ChoiceHandlers
+      guid: 4fa6d62f894ae6e4698bfa8af59e7942
+  - Id: ChoiceHandlers/c87a476a-b60d-4b7c-a0ac-2e5d51bc780f
+    Resources:
+    - name: ChatReply
+      pathPrefix: ChoiceHandlers
+      guid: 0e61df696cabbea448510879ee732b00
+  - Id: Spawn
+    Resources:
+    - name: Animate
+      pathPrefix: Spawn
+      guid: 7bf06fa813bb9c34daf521998fa72ab1
+    - name: DepthOfField
+      pathPrefix: Spawn
+      guid: ea76638b26a915946b62907dd1e776fd
+    - name: DigitalGlitch
+      pathPrefix: Spawn
+      guid: be75a73ecccb90b4caa5c14edb9ac467
+    - name: Rain
+      pathPrefix: Spawn
+      guid: a9117e2fa90704d45b3e1461596c11ee
+    - name: ShakeBackground
+      pathPrefix: Spawn
+      guid: 9f56c556ba32fd54fae62347c25a8145
+    - name: ShakeCamera
+      pathPrefix: Spawn
+      guid: 1c5b86cf3cfbb1f44ae5641699077da4
+    - name: ShakeCharacter
+      pathPrefix: Spawn
+      guid: 1224d69e1592d624cbde93d0f7383d91
+    - name: ShakePrinter
+      pathPrefix: Spawn
+      guid: 2795040988e866646801c80024c50be1
+    - name: Snow
+      pathPrefix: Spawn
+      guid: 9f4e71cb27fffa04486737d2cf8d622d
+    - name: SunShafts
+      pathPrefix: Spawn
+      guid: c4bf810b9b6cc9f44a58fd670678ded4
+    - name: Blur
+      pathPrefix: Spawn
+      guid: e466d9326b30a4b49a3dad428b4d9968
+  - Id: UI
+    Resources:
+    - name: ClickThroughPanel
+      pathPrefix: UI
+      guid: 702c32b2de0c0784b9a66ec90601874f
+    - name: BacklogUI
+      pathPrefix: UI
+      guid: 7fba909c66b25324cb77db18679c2c96
+    - name: CGGalleryUI
+      pathPrefix: UI
+      guid: 71da50c8dae82bd42ba67528804e820c
+    - name: ConfirmationUI
+      pathPrefix: UI
+      guid: 88d03f19bcbff914ba33a7c9895e2d7c
+    - name: ContinueInputUI
+      pathPrefix: UI
+      guid: 1add671f8348e8443bcc56290e82fc5e
+    - name: ExternalScriptsUI
+      pathPrefix: UI
+      guid: 671ceb4f549ddf046913d7debf113469
+    - name: LoadingUI
+      pathPrefix: UI
+      guid: 53aad00e5cf184e458adb001c550518a
+    - name: MovieUI
+      pathPrefix: UI
+      guid: f9a211517d1cb1a44964dc2254463049
+    - name: RollbackUI
+      pathPrefix: UI
+      guid: a32c73a3aff4b274c85b3ff16c854b07
+    - name: SaveLoadUI
+      pathPrefix: UI
+      guid: 8d53726b3d08433479398f02b4780e7f
+    - name: SceneTransitionUI
+      pathPrefix: UI
+      guid: e3b234b4273b7f64ab3f1d9fe425ed23
+    - name: SettingsUI
+      pathPrefix: UI
+      guid: 65c37f59e9b266f468dd5381fdc03fc3
+    - name: TipsUI
+      pathPrefix: UI
+      guid: f5aae572225ee1b4c96d1a17fc5cb073
+    - name: TitleUI
+      pathPrefix: UI
+      guid: 4b121aa1be1b7e04480b452c595ff17a
+    - name: VariableInputUI
+      pathPrefix: UI
+      guid: bb95f484e341dcd4391a572f22b7d067
+    - name: PauseUI
+      pathPrefix: UI
+      guid: 480f5db62ea305c46b89a86496d2a0c9
+    - name: ToastUI
+      pathPrefix: UI
+      guid: dd85ce99288c2f8488447fa511b1c0d6
+    - name: ScriptNavigatorUI
+      pathPrefix: UI
+      guid: 735d6aa767879aa469134858c5b2f0a7
+    - name: SceneAssistantUI
+      pathPrefix: UI
+      guid: 51299eb24d811fb4895f4eae92c52f60
+  - Id: Scripts
+    Resources:
+    - name: v_script
+      pathPrefix: Scripts
+      guid: ed011a946c6d2f24ca4d6ae2797ed2e7
+    - name: title
+      pathPrefix: Scripts
+      guid: 0cbd96fe8c1af45448ddc2efee1cf191
+    - name: AudioTop
+      pathPrefix: Scripts
+      guid: a1140f75ce0922744836b8d892b681e7
+    - name: AudioBottom
+      pathPrefix: Scripts
+      guid: d866f99d46daa4847bcca59d2a280bd9
+    - name: init
+      pathPrefix: Scripts
+      guid: 7e4da8d5d637cd14e8488e715c01605b
+  - Id: Characters/4fb5980e-7a12-4c0c-afff-c9eaf1c08caa
+    Resources:
+    - name: default
+      pathPrefix: Characters/kami
+      guid: 234495d0869f06745865c7ddfacb23f3
+    - name: h1
+      pathPrefix: Characters/kami
+      guid: 234495d0869f06745865c7ddfacb23f3
+    - name: h2
+      pathPrefix: Characters/kami
+      guid: 15049c44943f39a4d895424a577d6450
+    - name: h3
+      pathPrefix: Characters/kami
+      guid: 5aaf6f9e85912a240ad90b5b11a2b3b7
+    - name: h4
+      pathPrefix: Characters/kami
+      guid: f85c327179e88b0498806813db9ac355
+    - name: t1
+      pathPrefix: Characters/kami
+      guid: d821f75cbe5594d4d834e40c18095dae
+    - name: t2
+      pathPrefix: Characters/kami
+      guid: 1b1680b190aa0bd4baa50c31fa8319d2
+    - name: t3
+      pathPrefix: Characters/kami
+      guid: b392335dfa825b44f890c7746c6b1e98
+    - name: t4
+      pathPrefix: Characters/kami
+      guid: 9b35b09d047e6ec49bb0d01a80a5022d
+  - Id: Backgrounds/a511f4fc-df74-4931-b8c4-9a408b3bf368
+    Resources:
+    - name: tavern
+      pathPrefix: Backgrounds/MainBackground
+      guid: 3b809256f34008b48bf2bbedde24561a
+    - name: outside
+      pathPrefix: Backgrounds/MainBackground
+      guid: 3eabbad2978b4aa4fa7adfd420843acf
+    - name: lowerclock
+      pathPrefix: Backgrounds/MainBackground
+      guid: f9129531ffbabf14084075e987f82ae8
+    - name: upperclock
+      pathPrefix: Backgrounds/MainBackground
+      guid: 21130f6e56cf8bc46a0d0437aedee9f0
+    - name: title
+      pathPrefix: Backgrounds/MainBackground
+      guid: c5ee0fd38bd7b9e409366062a36a2e6d
+    - name: choice_k
+      pathPrefix: Backgrounds/MainBackground
+      guid: 1ed6e20b7df75aa44acb7d9eed7c4bce
+    - name: choice_v
+      pathPrefix: Backgrounds/MainBackground
+      guid: 3b1428425284b2748994cebfa0969f9f
+    - name: choice_k_h
+      pathPrefix: Backgrounds/MainBackground
+      guid: d086f2deb9362b54981942dd98de9d4a
+    - name: choice_k_t
+      pathPrefix: Backgrounds/MainBackground
+      guid: 56fb29e91a3e8ac4eb50b8d0e84a21be
+    - name: choice_v_h
+      pathPrefix: Backgrounds/MainBackground
+      guid: f7219a66c52ca4543a73fc05fa30a353
+    - name: choice_v_t
+      pathPrefix: Backgrounds/MainBackground
+      guid: cd8e0caf43f23c847acfd85441bd1e82
+  - Id: Characters/9cb5070d-b519-4a19-9750-6ba30594d960
+    Resources:
+    - name: default
+      pathPrefix: Characters/vald
+      guid: b2d98f0d8c7706042a9a5ee36ba6d9d5
+    - name: h1
+      pathPrefix: Characters/vald
+      guid: b2d98f0d8c7706042a9a5ee36ba6d9d5
+    - name: h2
+      pathPrefix: Characters/vald
+      guid: 38b3b8b29a8c8d14594933fe9b3ef90d
+    - name: h3
+      pathPrefix: Characters/vald
+      guid: 3be4abdbfc6e88445816ac0876684fce
+    - name: h4
+      pathPrefix: Characters/vald
+      guid: db8ba3d7a41e90a4c8198d68623b1b77
+    - name: t1
+      pathPrefix: Characters/vald
+      guid: e5000b229fc96f34982a9d31066d1d34
+    - name: t2
+      pathPrefix: Characters/vald
+      guid: 675f99f6d731e9c4ab46f71b38b867ee
+    - name: t3
+      pathPrefix: Characters/vald
+      guid: fe2b8c409d36b884ba0839f32c3f9098
+    - name: t4
+      pathPrefix: Characters/vald
+      guid: eb89357aaf7056b488833f9f5ea78e68
+  - Id: Characters/81192206-d2fa-4abc-977d-dc627d1dadff
+    Resources:
+    - name: default
+      pathPrefix: Characters/sisk
+      guid: 58116e523e618c24fb79a4f3965336c6
+  - Id: Characters/b592751e-d717-4113-8572-26d94321165b
+    Resources:
+    - name: default
+      pathPrefix: Characters/ashh
+      guid: 0b1685a4bc831764d9ec3c5a71957017
+  - Id: Characters/d5e755f4-a2d2-480e-8416-4de199e9832a
+    Resources: []
+  - Id: Characters/91d502bd-7c49-407d-a900-919e6826c3e5
+    Resources: []
+  - Id: Characters/22e0d5b1-3287-443f-aea0-88ce7d74cfa4
+    Resources: []
+  - Id: Characters/c1375346-3e86-44a1-8004-ada008893d14
+    Resources:
+    - name: default
+      pathPrefix: Characters/hxh
+      guid: 6e274f35eb44f924a9d2e03c19eabeb7
+  - Id: Characters/10876e32-f316-4f96-ab69-5fd60ac18ce4
+    Resources:
+    - name: default
+      pathPrefix: Characters/hxt
+      guid: fbfeb9a9a65a32348b86599169983a41
+  - Id: Characters/38c96470-5798-414f-ab9a-baa1f773fd7d
+    Resources:
+    - name: default
+      pathPrefix: Characters/txh
+      guid: 87c34a2c97b81694292f80ab3ff12ce5
+  - Id: Characters/637fee16-331f-4b1c-b5bb-5f6893f696a1
+    Resources:
+    - name: default
+      pathPrefix: Characters/txt
+      guid: 3cf3ebe789827ba40a50a287cf537ecf
+  - Id: Movies
+    Resources:
+    - name: credits
+      pathPrefix: Movies
+      guid: d231abee7e523cd45a21db9ed61c5760
+  - Id: Audio
+    Resources: []
+  - Id: Characters/5057faba-d3d7-4861-8128-62f1544133af
+    Resources:
+    - name: default
+      pathPrefix: Characters/goon1
+      guid: 6ea87757643876d40a0739c122c9e0bc
+  - Id: Characters/9a4ff87e-5b3e-4672-9bb1-2fd38c4d5d15
+    Resources:
+    - name: default
+      pathPrefix: Characters/goon2
+      guid: 019db2e65118e144699d236e7b6975f7
+  - Id: Characters/b5d36ae8-7993-4dea-a4ac-b3f5edad432b
+    Resources:
+    - name: Goon 3
+      pathPrefix: Characters/goon3
+      guid: 4926b09cd054c4f458cf1567b6c12c3d
+  - Id: Characters/67338e06-443f-4aff-8d2e-07e1c5631335
+    Resources:
+    - name: default
+      pathPrefix: Characters/goon4
+      guid: e70153fc2f152534eb1b58fd0009df20

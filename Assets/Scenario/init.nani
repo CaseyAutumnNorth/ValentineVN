@@ -1,0 +1,36 @@
+;Initialisation Script
+
+;Discover if the player has a code and get it
+@back title
+@hideUI TitleUI
+;@printer Dialogue
+;@hideUI AudioButtons
+@bgm op_ost fade:5
+;@print author:narrate "Did a friend send a code to view this game?"
+
+
+narrate: Did a friend send you a code to view this game?
+@choice "Yes, I have a code."
+    @set hasCode=true
+@choice "No, I do not have a code."
+    @set hasCode=false
+@stop
+
+@if hasCode==true
+    @input gameCode summary:"Enter the code here." value:"code"
+    @stop
+    narrate: Enjoy the story they have created for you! (Use a click or enter to move through the story.)
+    ;narrate: If you would like to adjust settings such as volume, use the Esc key.
+    @goto v_script.kami_and_vald
+@else if:hasCode==false
+    ;@back title
+    ;@hideUI AudioButtons
+    @title
+    ;@bgm op_ost fade:3
+    @stop
+
+;# OnNewGame
+;@stopBgm fade:2
+;@wait 2
+
+;@stop

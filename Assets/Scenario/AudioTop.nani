@@ -1,0 +1,25 @@
+;this script plays audio files based upon a variable
+;it plays them for the top button in the audio preview only
+;it is triggered by the playtop on.click event (if I'm very very lucky)
+;the top characters are:
+;kami_diana
+;vald_amanda
+;ashh_sam
+;sisk_diana
+
+;clips to play
+;kami: Voice file: “Master Gildon was exceptional.”
+;vald: Voice file: “Ahhhh! That Dwarf’s Bay Brew really hits the spot.”
+;ashh: ashh: The name is Ash of the Sanguine Vipers. The pleasure is yours.
+;sisk: Hah! You’re always so ready to lend a hand. That’s why I like you!
+
+@if audtop=="kami_diana"
+    @voice l8_Diana
+@else if:audtop=="vald_amanda"
+    @voice l1_Amanda
+@else if:audtop=="ashh_sam"
+    @voice l26_Sam
+@else if:audtop=="sisk_diana"
+    @voice l42_Diana
+
+@stop
